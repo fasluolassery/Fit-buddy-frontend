@@ -8,6 +8,7 @@ type Props = {
 
 export default function RequireRole({ allowedRoles }: Props) {
   const { user } = useAppSelector((state) => state.auth);
+  console.log("here at requireRole: ", user?.email);
 
   if (!user) {
     return <Navigate to={"/login"} replace />;

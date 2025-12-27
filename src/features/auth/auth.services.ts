@@ -1,7 +1,8 @@
-import api from "../../lib/api";
+import api, { refreshApi } from "../../lib/api";
 import type { ApiResponse } from "../../shared/types/api";
 import type {
   LoginResponseData,
+  MeResponseData,
   SignupResponseData,
   VerifyOtpResponseData,
 } from "./types";
@@ -31,10 +32,16 @@ export const loginRequest = (
     .then((res) => res.data);
 };
 
-export const getMeRequest = async (): Promise<
+export const getMeRequest = async (): Promise<ApiResponse<MeResponseData>> => {
+  return api
+    .get<ApiResponse<MeResponseData>>("/users/me")
+    .then((res) => res.data);
+};
+
+export const refreshTokenRequest = (): Promise<
   ApiResponse<LoginResponseData>
 > => {
-  return api
-    .get<ApiResponse<LoginResponseData>>("/auth/me")
+  return refreshApi
+    .post<ApiResponse<LoginResponseData>>("/auth/refresh")
     .then((res) => res.data);
 };

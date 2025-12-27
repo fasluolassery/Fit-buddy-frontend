@@ -5,7 +5,7 @@ export interface ApiResponse<T> {
 }
 
 export interface ApiErrorResponse {
-  success: false;
+  success: boolean;
   error: {
     message: string;
     code: string;

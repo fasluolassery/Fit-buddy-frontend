@@ -17,3 +17,9 @@ export interface LoginResponseData {
     role: UserRole;
   };
 }
+
+export interface MeResponseData {
+  _id: string;
+  email: string;
+  role: UserRole;
+}

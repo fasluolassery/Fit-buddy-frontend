@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { useAppDispatch } from "../shared/hooks/redux";
 import { getMeRequest } from "../features/auth/auth.services";
-import { authSuccess, logout } from "../features/auth/auth.slice";
+import { logout, updateUser } from "../features/auth/auth.slice";
 
 type Props = {
   children: ReactNode;
@@ -17,8 +17,8 @@ function AuthInitializer({ children }: Props): JSX.Element {
     const initAuth = async () => {
       try {
         const res = await getMeRequest();
-        const { user, accessToken } = res.data;
-        dispatch(authSuccess({ user, accessToken }));
+        const { data } = res;
+        dispatch(updateUser(data));
       } catch {
         dispatch(logout());
       } finally {

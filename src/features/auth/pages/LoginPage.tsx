@@ -3,19 +3,13 @@ import { useForm } from "react-hook-form";
 import { loginSchema, type LoginInput } from "../validation";
 import { useAuth } from "../hooks/useAuth";
 import { authSuccess } from "../auth.slice";
-import { useAppDispatch, useAppSelector } from "../../../shared/hooks/redux";
-import { useEffect } from "react";
+import { useAppDispatch } from "../../../shared/hooks/redux";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
-  const storedata = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   const { login, loading, error } = useAuth();
-
-  useEffect(() => {
-    console.log("Auth store updated:", storedata);
-  }, [storedata]);
 
   const {
     register,
@@ -32,6 +26,7 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginInput) => {
     const res = await login(data);
     const { user, accessToken } = res.data;
+    console.log("Signup Res: ", res);
     dispatch(
       authSuccess({
         user,

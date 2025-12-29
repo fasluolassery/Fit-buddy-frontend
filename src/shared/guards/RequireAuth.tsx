@@ -2,11 +2,12 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../hooks/redux";
 
 export default function RequireAuth() {
-  const { isAuthenticated } = useAppSelector((s) => s.auth);
+  console.log("RequireAuth 4");
+  const { user, isLoading } = useAppSelector((s) => s.auth);
 
-  console.log("here at requireAuth: ", isAuthenticated);
+  if (isLoading) return <div>Loading...</div>;
 
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/login" replace />;
 
   return <Outlet />;
 }

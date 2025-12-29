@@ -7,8 +7,10 @@ type Props = {
 };
 
 export default function RequireRole({ allowedRoles }: Props) {
-  const { user } = useAppSelector((state) => state.auth);
-  console.log("here at requireRole: ", user?.email);
+  const { user, isLoading } = useAppSelector((state) => state.auth);
+  console.log("RequireRole 5");
+
+  if (isLoading) return <div>Loading....</div>;
 
   if (!user) {
     return <Navigate to={"/login"} replace />;

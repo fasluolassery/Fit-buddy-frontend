@@ -2,7 +2,7 @@ import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { type ApiErrorResponse } from "../shared/types/api";
 import { store } from "../app/store";
 import { refreshTokenRequest } from "../features/auth/auth.services";
-import { tokenRefreshed } from "../features/auth/auth.slice";
+import { logout, tokenRefreshed } from "../features/auth/auth.slice";
 
 const { dispatch } = store;
 
@@ -73,13 +73,19 @@ api.interceptors.response.use(
         const refreshResponse = await refreshTokenRequest();
         const { accessToken } = refreshResponse.data;
 
-        console.log("refresh res: ", refreshResponse);
+        console.log("Refresh Res: ", refreshResponse);
         dispatch(tokenRefreshed({ accessToken }));
         // console.log("auth state after refresh:", store.getState().auth);
 
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return api(originalRequest);
-      } catch {
+      } catch (err) {
+        console.log(
+          "Backend Err: ",
+          err instanceof AxiosError ? err.response?.data : err,
+        );
+
+        dispatch(logout());
         return Promise.reject(
           normalizeError({
             message: "Session expired",

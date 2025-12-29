@@ -45,3 +45,7 @@ export const refreshTokenRequest = (): Promise<
     .post<ApiResponse<LoginResponseData>>("/auth/refresh")
     .then((res) => res.data);
 };
+
+export const logoutRequest = (): Promise<ApiResponse<null>> => {
+  return api.post<ApiResponse<null>>("/auth/logout").then((res) => res.data);
+};

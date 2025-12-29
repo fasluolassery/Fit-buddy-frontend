@@ -9,8 +9,8 @@ export interface AuthUser {
 
 interface AuthState {
   user: AuthUser | null;
-  isAuthenticated: boolean;
   accessToken: string | null;
+  isLoading: boolean;
 }
 
 type AuthSuccessPayload = {
@@ -20,8 +20,8 @@ type AuthSuccessPayload = {
 
 const initialState: AuthState = {
   user: null,
-  isAuthenticated: false,
   accessToken: null,
+  isLoading: true,
 };
 
 const authSlice = createSlice({
@@ -29,26 +29,31 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     authSuccess(state, action: PayloadAction<AuthSuccessPayload>) {
-      state.user = action.payload.user;
-      state.accessToken = action.payload.accessToken;
-      state.isAuthenticated = true;
+      const { user, accessToken } = action.payload;
+      state.user = user;
+      state.accessToken = accessToken;
+      state.isLoading = false;
     },
     logout(state) {
       state.user = null;
       state.accessToken = null;
-      state.isAuthenticated = false;
+      state.isLoading = false;
     },
     tokenRefreshed(state, action: PayloadAction<{ accessToken: string }>) {
-      state.accessToken = action.payload.accessToken;
-      state.isAuthenticated = true;
+      const { accessToken } = action.payload;
+      state.accessToken = accessToken;
     },
     updateUser(state, action: PayloadAction<AuthUser>) {
-      state.user = action.payload;
-      state.isAuthenticated = true;
+      const { payload } = action;
+      state.user = payload;
+      state.isLoading = false;
+    },
+    authResolved(state) {
+      state.isLoading = false;
     },
   },
 });
 
-export const { authSuccess, logout, tokenRefreshed, updateUser } =
+export const { authSuccess, logout, tokenRefreshed, updateUser, authResolved } =
   authSlice.actions;
 export default authSlice.reducer;

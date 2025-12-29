@@ -3,55 +3,28 @@ import AuthLayout from "../layouts/AuthLayout";
 import SignupPage from "../features/auth/pages/SignupPage";
 import VerifyOtpPage from "../features/auth/pages/VerifyOtpPage";
 import LoginPage from "../features/auth/pages/LoginPage";
-import RequireAuth from "../shared/guards/RequireAuth";
-import RequireRole from "../shared/guards/RequireRole";
 import Unauthorized from "../shared/pages/Unauthorized";
+import RequireGuest from "../shared/guards/RequireGuest";
 
 // placeholder pages
 // eslint-disable-next-line react-refresh/only-export-components
-const UserDashboard = () => <div>User Dashboard</div>;
-// eslint-disable-next-line react-refresh/only-export-components
-const AdminDashboard = () => <div>Admin Dashboard</div>;
+const LandingPage = () => <div>Landing Page</div>;
 
 export const router = createBrowserRouter([
+  { path: "/", element: <LandingPage /> },
   {
-    path: "/",
-    element: <AuthLayout />,
-    children: [
-      { path: "signup", element: <SignupPage /> },
-      {
-        path: "verify-otp",
-        element: <VerifyOtpPage />,
-      },
-      {
-        path: "login",
-        element: <LoginPage />,
-      },
-    ],
-  },
-  {
-    element: <RequireAuth />,
+    element: <RequireGuest />,
     children: [
       {
-        element: <RequireRole allowedRoles={["user"]} />,
+        path: "/",
+        element: <AuthLayout />,
         children: [
-          {
-            path: "/dashboard",
-            element: <UserDashboard />,
-          },
-        ],
-      },
-      {
-        element: <RequireRole allowedRoles={["admin"]} />,
-        children: [
-          {
-            path: "/admin",
-            element: <AdminDashboard />,
-          },
+          { path: "login", element: <LoginPage /> },
+          { path: "signup", element: <SignupPage /> },
+          { path: "verify-otp", element: <VerifyOtpPage /> },
         ],
       },
     ],
   },
-
   { path: "/unauthorized", element: <Unauthorized /> },
 ]);

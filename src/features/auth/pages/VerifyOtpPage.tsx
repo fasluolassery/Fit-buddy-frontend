@@ -9,7 +9,7 @@ export default function VerifyOtpPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
-  const { verifyOtp, loading, error } = useAuth();
+  const { verifyOtp, loading, apiError } = useAuth();
 
   const email = location.state?.email;
 
@@ -99,7 +99,9 @@ export default function VerifyOtpPage() {
             {loading ? "Verifying..." : "Verify OTP"}
           </button>
 
-          {error && <p className="text-center text-sm text-red-600">{error}</p>}
+          {apiError && (
+            <p className="text-center text-sm text-red-600">{apiError}</p>
+          )}
 
           <p className="text-center text-sm text-gray-500">
             Didn’t receive the code?{" "}

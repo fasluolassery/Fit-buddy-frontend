@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { login, loading, error } = useAuth();
+  const { login, loading, apiError } = useAuth();
 
   const {
     register,
@@ -64,7 +64,7 @@ export default function LoginPage() {
           <p className="text-sm text-red-500">{errors.password.message}</p>
         )}
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {apiError && <p className="text-sm text-red-600">{apiError}</p>}
 
         <button
           type="submit"

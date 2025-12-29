@@ -2,11 +2,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema, type SignupInput } from "../validation";
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function SignupPage() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const navigate = useNavigate();
-  const { signup, loading, error } = useAuth();
+  const { signup, loading, apiError } = useAuth();
 
   const {
     register,
@@ -17,6 +22,8 @@ export default function SignupPage() {
     mode: "onTouched",
     defaultValues: {
       password: "user123",
+      confirmPassword: "user123",
+      role: "user",
     },
   });
 
@@ -27,133 +34,173 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-2xl font-semibold text-gray-800">
-          Create your account
-        </h1>
+    <div className="space-y-6">
+      {/* Heading */}
+      <div className="text-center">
+        <h1 className="mb-2 text-2xl font-bold">Create your account</h1>
+        <p className="text-xs text-zinc-400">
+          Start your premium fitness journey
+        </p>
+      </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="space-y-4">
           {/* Name */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              Name
-            </label>
             <input
               {...register("name")}
-              placeholder="John Doe"
-              className={`w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${
+              type="text"
+              placeholder="Full name"
+              className={`w-full rounded-xl border bg-zinc-900/70 px-4 py-2.5 text-white transition-colors placeholder:text-zinc-500 focus:outline-none ${
                 errors.name
-                  ? "border-red-500 focus:ring-red-200"
-                  : "border-gray-300 focus:ring-blue-200"
+                  ? "border-red-500 focus:border-red-500"
+                  : "border-zinc-800 focus:border-amber-600"
               }`}
             />
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-            )}
+            <p
+              className={`mt-1 text-xs text-red-400 transition-all duration-200 ${
+                errors.name ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
+              } overflow-hidden`}
+            >
+              {errors.name?.message}
+            </p>
           </div>
 
           {/* Email */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              Email
-            </label>
             <input
               {...register("email")}
-              placeholder="you@example.com"
-              className={`w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${
+              type="email"
+              placeholder="Email address"
+              className={`w-full rounded-xl border bg-zinc-900/70 px-4 py-2.5 text-white transition-colors placeholder:text-zinc-500 focus:outline-none ${
                 errors.email
-                  ? "border-red-500 focus:ring-red-200"
-                  : "border-gray-300 focus:ring-blue-200"
+                  ? "border-red-500 focus:border-red-500"
+                  : "border-zinc-800 focus:border-amber-600"
               }`}
             />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.email.message}
-              </p>
-            )}
+            <p
+              className={`mt-1 text-xs text-red-400 transition-all duration-200 ${
+                errors.email ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
+              } overflow-hidden`}
+            >
+              {errors.email?.message}
+            </p>
           </div>
 
           {/* Phone */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              Phone
-            </label>
             <input
               {...register("phone")}
-              placeholder="9876543210"
-              className={`w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${
+              type="tel"
+              placeholder="Phone number"
+              className={`w-full rounded-xl border bg-zinc-900/70 px-4 py-2.5 text-white transition-colors placeholder:text-zinc-500 focus:outline-none ${
                 errors.phone
-                  ? "border-red-500 focus:ring-red-200"
-                  : "border-gray-300 focus:ring-blue-200"
+                  ? "border-red-500 focus:border-red-500"
+                  : "border-zinc-800 focus:border-amber-600"
               }`}
             />
-            {errors.phone && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.phone.message}
-              </p>
-            )}
+            <p
+              className={`mt-1 text-xs text-red-400 transition-all duration-200 ${
+                errors.phone ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
+              } overflow-hidden`}
+            >
+              {errors.phone?.message}
+            </p>
           </div>
 
           {/* Password */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              type="password"
-              {...register("password")}
-              placeholder="••••••••"
-              className={`w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 ${
-                errors.password
-                  ? "border-red-500 focus:ring-red-200"
-                  : "border-gray-300 focus:ring-blue-200"
-              }`}
-            />
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-
-          {/* Role */}
-          <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              Role
-            </label>
-            <select
-              {...register("role")}
-              className={`w-full rounded-md border bg-white px-3 py-2 focus:outline-none focus:ring-2 ${
-                errors.role
-                  ? "border-red-500 focus:ring-red-200"
-                  : "border-gray-300 focus:ring-blue-200"
-              }`}
+            <div className="relative">
+              <input
+                {...register("password")}
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className={`w-full rounded-xl border bg-zinc-900/70 px-4 py-2.5 text-white transition-colors placeholder:text-zinc-500 focus:outline-none ${
+                  errors.password
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-zinc-800 focus:border-amber-600"
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 transition-colors hover:text-amber-400"
+                aria-label="Toggle password visibility"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            <p
+              className={`mt-1 text-xs text-red-400 transition-all duration-200 ${
+                errors.password ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
+              } overflow-hidden`}
             >
-              <option value="">Select role</option>
-              <option value="user">User</option>
-              <option value="trainer">Trainer</option>
-              <option value="admin">Admin</option>
-            </select>
-            {errors.role && (
-              <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>
-            )}
+              {errors.password?.message}
+            </p>
           </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-4 w-full rounded-md bg-blue-600 py-2 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading ? "Signing up..." : "Sign up"}
-          </button>
-        </form>
+          {/*Confirm Password */}
+          <div>
+            <div className="relative">
+              <input
+                {...register("confirmPassword")}
+                type={showConfirm ? "text" : "password"}
+                placeholder="Confirm Password"
+                className={`w-full rounded-xl border bg-zinc-900/70 px-4 py-2.5 text-white transition-colors placeholder:text-zinc-500 focus:outline-none ${
+                  errors.confirmPassword
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-zinc-800 focus:border-amber-600"
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirm((v) => !v)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 transition-colors hover:text-amber-400"
+                aria-label="Toggle confirm password visibility"
+              >
+                {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            <p
+              className={`mt-1 text-xs text-red-400 transition-all duration-200 ${
+                errors.confirmPassword
+                  ? "max-h-5 opacity-100"
+                  : "max-h-0 opacity-0"
+              } overflow-hidden`}
+            >
+              {errors.confirmPassword?.message}
+            </p>
+          </div>
+        </div>
 
-        {error && (
-          <p className="mt-4 text-center text-sm text-red-600">{error}</p>
-        )}
-      </div>
+        {/* Submit */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-2 w-full rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 py-3 font-semibold text-black transition-all duration-300 hover:from-amber-500 hover:to-amber-500 disabled:opacity-60"
+        >
+          {loading ? "Creating account..." : "Sign up"}
+        </button>
+        <p
+          className={`mt-3 text-center text-xs text-red-400 transition-all duration-200 ${
+            apiError ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
+          } overflow-hidden`}
+        >
+          {apiError}
+        </p>
+      </form>
+
+      {/* Footer */}
+      <p className="text-center text-sm text-zinc-400">
+        Already have an account?{" "}
+        <Link
+          to="/login"
+          className="font-medium text-amber-400 hover:text-amber-300"
+        >
+          Sign in
+        </Link>
+      </p>
     </div>
   );
 }

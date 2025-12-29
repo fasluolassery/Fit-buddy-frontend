@@ -7,18 +7,22 @@ import {
 import type { LoginInput, SignupInput, VerifyOtpInput } from "../validation";
 import type { ApiErrorResponse } from "../../../shared/types/api";
 
+function getErrorMessage(err: unknown): string {
+  const apiError = err as ApiErrorResponse;
+  return apiError?.error?.message ?? "Something went wrong";
+}
+
 export function useAuth() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const signup = async (data: SignupInput) => {
     try {
       setLoading(true);
-      setError(null);
+      setApiError(null);
       return await signupRequest(data);
     } catch (err: unknown) {
-      const apiError = err as ApiErrorResponse;
-      setError(apiError?.error?.message || "Error");
+      setApiError(getErrorMessage(err));
       throw err;
     } finally {
       setLoading(false);
@@ -28,11 +32,10 @@ export function useAuth() {
   const verifyOtp = async (data: VerifyOtpInput) => {
     try {
       setLoading(true);
-      setError(null);
+      setApiError(null);
       return await verifyOtpRequest(data);
     } catch (err) {
-      const apiError = err as ApiErrorResponse;
-      setError(apiError?.error?.message || "Error");
+      setApiError(getErrorMessage(err));
       throw err;
     } finally {
       setLoading(false);
@@ -42,11 +45,10 @@ export function useAuth() {
   const login = async (data: LoginInput) => {
     try {
       setLoading(true);
-      setError(null);
+      setApiError(null);
       return await loginRequest(data);
     } catch (err) {
-      const apiError = err as ApiErrorResponse;
-      setError(apiError.error.message || "Error");
+      setApiError(getErrorMessage(err));
       throw err;
     } finally {
       setLoading(false);
@@ -58,6 +60,6 @@ export function useAuth() {
     verifyOtp,
     login,
     loading,
-    error,
+    apiError,
   };
 }

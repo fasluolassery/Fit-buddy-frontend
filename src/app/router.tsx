@@ -5,10 +5,7 @@ import VerifyOtpPage from "../features/auth/pages/VerifyOtpPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import Unauthorized from "../shared/pages/Unauthorized";
 import RequireGuest from "../shared/guards/RequireGuest";
-
-// placeholder pages
-// eslint-disable-next-line react-refresh/only-export-components
-const LandingPage = () => <div>Landing Page</div>;
+import LandingPage from "../features/landing/pages/LandingPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
@@ -16,12 +13,11 @@ export const router = createBrowserRouter([
     element: <RequireGuest />,
     children: [
       {
-        path: "/",
         element: <AuthLayout />,
         children: [
-          { path: "login", element: <LoginPage /> },
-          { path: "signup", element: <SignupPage /> },
-          { path: "verify-otp", element: <VerifyOtpPage /> },
+          { path: "/login", element: <LoginPage /> },
+          { path: "/signup", element: <SignupPage /> },
+          { path: "/verify-otp", element: <VerifyOtpPage /> },
         ],
       },
     ],

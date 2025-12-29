@@ -13,7 +13,7 @@ export const signupRequest = (
 ): Promise<ApiResponse<SignupResponseData>> => {
   return api
     .post<ApiResponse<SignupResponseData>>("/auth/signup", data)
-    .then((res) => res.data);
+    .then(({ data }) => data);
 };
 
 export const verifyOtpRequest = (
@@ -21,7 +21,7 @@ export const verifyOtpRequest = (
 ): Promise<ApiResponse<VerifyOtpResponseData>> => {
   return api
     .post<ApiResponse<VerifyOtpResponseData>>("/auth/verify-otp", data)
-    .then((res) => res.data);
+    .then(({ data }) => data);
 };
 
 export const loginRequest = (
@@ -29,13 +29,13 @@ export const loginRequest = (
 ): Promise<ApiResponse<LoginResponseData>> => {
   return api
     .post<ApiResponse<LoginResponseData>>("/auth/login", data)
-    .then((res) => res.data);
+    .then(({ data }) => data);
 };
 
 export const getMeRequest = async (): Promise<ApiResponse<MeResponseData>> => {
   return api
     .get<ApiResponse<MeResponseData>>("/users/me")
-    .then((res) => res.data);
+    .then(({ data }) => data);
 };
 
 export const refreshTokenRequest = (): Promise<
@@ -43,9 +43,9 @@ export const refreshTokenRequest = (): Promise<
 > => {
   return refreshApi
     .post<ApiResponse<LoginResponseData>>("/auth/refresh")
-    .then((res) => res.data);
+    .then(({ data }) => data);
 };
 
 export const logoutRequest = (): Promise<ApiResponse<null>> => {
-  return api.post<ApiResponse<null>>("/auth/logout").then((res) => res.data);
+  return api.post<ApiResponse<null>>("/auth/logout").then(({ data }) => data);
 };

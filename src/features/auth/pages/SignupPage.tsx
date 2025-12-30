@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { FaGoogle } from "react-icons/fa";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +39,7 @@ export default function SignupPage() {
       {/* Heading */}
       <div className="text-center">
         <h1 className="mb-2 text-2xl font-bold">Create your account</h1>
-        <p className="text-xs text-zinc-400">
+        <p className="text-sm text-zinc-400">
           Start your premium fitness journey
         </p>
       </div>
@@ -189,6 +190,25 @@ export default function SignupPage() {
         >
           {apiError}
         </p>
+
+        {/* Divider */}
+        <div className="my-5 flex items-center gap-4">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+          <span className="text-sm font-normal text-zinc-500">or</span>
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+        </div>
+
+        <button
+          type="button"
+          className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/70 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:border-amber-600"
+        >
+          {/* liquid layer */}
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-amber-500/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+
+          {/* content */}
+          <FaGoogle className="relative z-10 h-4 w-4 text-zinc-400 transition-colors group-hover:text-white" />
+          <span className="relative z-10">Continue with Google</span>
+        </button>
       </form>
 
       {/* Footer */}

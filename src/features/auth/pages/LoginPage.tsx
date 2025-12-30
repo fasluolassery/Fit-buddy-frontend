@@ -4,11 +4,16 @@ import { loginSchema, type LoginInput } from "../validation";
 import { useAuth } from "../hooks/useAuth";
 import { authSuccess } from "../auth.slice";
 import { useAppDispatch } from "../../../shared/hooks/redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { FaGoogle } from "react-icons/fa";
 
 export default function LoginPage() {
-  const dispatch = useAppDispatch();
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { login, loading, apiError } = useAuth();
 
   const {
@@ -26,7 +31,6 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginInput) => {
     const res = await login(data);
     const { user, accessToken } = res.data;
-    console.log("Signup Res: ", res);
     dispatch(
       authSuccess({
         user,
@@ -38,42 +42,118 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-sm space-y-4 rounded-lg bg-white p-6 shadow"
-      >
-        <h1 className="text-center text-xl font-semibold">Login</h1>
+    <div className="space-y-6">
+      {/* Heading */}
+      <div className="text-center">
+        <h1 className="mb-2 text-2xl font-bold">Welcome back</h1>
+        <p className="text-sm text-zinc-400">
+          Sign in to continue your fitness journey
+        </p>
+      </div>
 
-        <input
-          {...register("email")}
-          placeholder="Email"
-          className="w-full rounded border p-2"
-        />
-        {errors.email && (
-          <p className="text-sm text-red-500">{errors.email.message}</p>
-        )}
+      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="space-y-4">
+          {/* Email */}
+          <div>
+            <input
+              {...register("email")}
+              type="email"
+              placeholder="Email address"
+              className={`w-full rounded-xl border bg-zinc-900/70 px-4 py-2.5 text-white transition-colors placeholder:text-zinc-500 focus:outline-none ${
+                errors.email
+                  ? "border-red-500 focus:border-red-500"
+                  : "border-zinc-800 focus:border-amber-600"
+              }`}
+            />
+            <p
+              className={`mt-1 text-xs text-red-400 transition-all duration-200 ${
+                errors.email ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
+              } overflow-hidden`}
+            >
+              {errors.email?.message}
+            </p>
+          </div>
 
-        <input
-          {...register("password")}
-          type="password"
-          placeholder="Password"
-          className="w-full rounded border p-2"
-        />
-        {errors.password && (
-          <p className="text-sm text-red-500">{errors.password.message}</p>
-        )}
+          {/* Password */}
+          <div>
+            <div className="relative">
+              <input
+                {...register("password")}
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                className={`w-full rounded-xl border bg-zinc-900/70 px-4 py-2.5 text-white transition-colors placeholder:text-zinc-500 focus:outline-none ${
+                  errors.password
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-zinc-800 focus:border-amber-600"
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 transition-colors hover:text-amber-400"
+                aria-label="Toggle password visibility"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            <p
+              className={`mt-1 text-xs text-red-400 transition-all duration-200 ${
+                errors.password ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
+              } overflow-hidden`}
+            >
+              {errors.password?.message}
+            </p>
+          </div>
+        </div>
 
-        {apiError && <p className="text-sm text-red-600">{apiError}</p>}
-
+        {/* Submit */}
         <button
           type="submit"
-          disabled={isSubmitting || loading}
-          className="w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+          disabled={loading || isSubmitting}
+          className="mt-2 w-full rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 py-3 font-semibold text-black transition-all duration-300 hover:from-amber-500 hover:to-amber-500 disabled:opacity-60"
         >
-          {isSubmitting || loading ? "Logging in..." : "Login"}
+          {loading || isSubmitting ? "Signing in..." : "Sign in"}
+        </button>
+
+        <p
+          className={`mt-3 text-center text-xs text-red-400 transition-all duration-200 ${
+            apiError ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
+          } overflow-hidden`}
+        >
+          {apiError}
+        </p>
+
+        {/* Divider */}
+        <div className="my-5 flex items-center gap-4">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+          <span className="text-sm font-normal text-zinc-500">or</span>
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+        </div>
+
+        <button
+          type="button"
+          className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/70 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:border-amber-600"
+        >
+          {/* liquid layer */}
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-amber-500/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+
+          {/* content */}
+          <FaGoogle className="relative z-10 h-4 w-4 text-zinc-400 transition-colors group-hover:text-white" />
+          <span className="relative z-10">Continue with Google</span>
         </button>
       </form>
+
+      {/* Footer */}
+      <p className="text-center text-sm text-zinc-400">
+        Don’t have an account?{" "}
+        <Link
+          to="/signup"
+          className="font-medium text-amber-400 hover:text-amber-300"
+        >
+          Create one
+        </Link>
+      </p>
     </div>
   );
 }

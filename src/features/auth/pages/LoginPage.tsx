@@ -104,6 +104,16 @@ export default function LoginPage() {
             >
               {errors.password?.message}
             </p>
+
+            {/* Forgot */}
+            <div className="mt-2 flex justify-end">
+              <Link
+                to="/forgot-password"
+                className="text-xs font-medium text-zinc-500 transition-colors hover:text-amber-400"
+              >
+                Forgot password?
+              </Link>
+            </div>
           </div>
         </div>
 

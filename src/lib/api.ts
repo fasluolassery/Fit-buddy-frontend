@@ -4,6 +4,10 @@ import { store } from "../app/store";
 import { refreshTokenRequest } from "../features/auth/auth.services";
 import { logout, tokenRefreshed } from "../features/auth/auth.slice";
 import { setGlobalError } from "../shared/redux/global-error.slice";
+import {
+  ERROR_CODES,
+  ERROR_MESSAGES,
+} from "../shared/constants/error-messages";
 
 const { dispatch } = store;
 
@@ -45,12 +49,12 @@ api.interceptors.response.use(
       | undefined;
 
     if (!error.response) {
-      dispatch(setGlobalError("Network error. Please check your connection."));
+      dispatch(setGlobalError(ERROR_MESSAGES.NETWORK_ERROR));
 
       return Promise.reject(
         normalizeError({
-          message: "Network error",
-          code: "NETWORK_ERROR",
+          message: ERROR_MESSAGES.NETWORK_ERROR,
+          code: ERROR_CODES.NETWORK_ERROR,
         }),
       );
     }
@@ -63,8 +67,8 @@ api.interceptors.response.use(
 
       return Promise.reject(
         normalizeError({
-          message: "Request failed",
-          code: "REQUEST_FAILED",
+          message: ERROR_MESSAGES.REQUEST_FAILED,
+          code: ERROR_CODES.REQUEST_FAILED,
         }),
       );
     }
@@ -89,19 +93,19 @@ api.interceptors.response.use(
         );
 
         dispatch(logout());
-        dispatch(setGlobalError("Session expired. Please login again."));
+        dispatch(setGlobalError(ERROR_MESSAGES.SESSION_EXPIRED));
 
         return Promise.reject(
           normalizeError({
-            message: "Session expired",
-            code: "SESSION_EXPIRED",
+            message: ERROR_MESSAGES.SESSION_EXPIRED,
+            code: ERROR_CODES.SESSION_EXPIRED,
           }),
         );
       }
     }
 
     if (error.response.status >= 500) {
-      dispatch(setGlobalError("Server is unavailable. Try again later."));
+      dispatch(setGlobalError(ERROR_MESSAGES.SERVER_ERROR));
     }
 
     if (error.response.data) {
@@ -110,8 +114,8 @@ api.interceptors.response.use(
 
     return Promise.reject(
       normalizeError({
-        message: "Unexpected error",
-        code: "UNEXPECTED_ERROR",
+        message: ERROR_MESSAGES.UNEXPECTED_ERROR,
+        code: ERROR_CODES.UNEXPECTED_ERROR,
       }),
     );
   },

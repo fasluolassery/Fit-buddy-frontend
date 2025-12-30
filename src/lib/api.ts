@@ -3,6 +3,7 @@ import { type ApiErrorResponse } from "../shared/types/api";
 import { store } from "../app/store";
 import { refreshTokenRequest } from "../features/auth/auth.services";
 import { logout, tokenRefreshed } from "../features/auth/auth.slice";
+import { setGlobalError } from "../shared/redux/global-error.slice";
 
 const { dispatch } = store;
 
@@ -44,6 +45,8 @@ api.interceptors.response.use(
       | undefined;
 
     if (!error.response) {
+      dispatch(setGlobalError("Network error. Please check your connection."));
+
       return Promise.reject(
         normalizeError({
           message: "Network error",
@@ -86,6 +89,8 @@ api.interceptors.response.use(
         );
 
         dispatch(logout());
+        dispatch(setGlobalError("Session expired. Please login again."));
+
         return Promise.reject(
           normalizeError({
             message: "Session expired",
@@ -93,6 +98,10 @@ api.interceptors.response.use(
           }),
         );
       }
+    }
+
+    if (error.response.status >= 500) {
+      dispatch(setGlobalError("Server is unavailable. Try again later."));
     }
 
     if (error.response.data) {

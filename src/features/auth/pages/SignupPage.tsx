@@ -1,11 +1,11 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signupSchema, type SignupInput } from "../validation";
+import { type SignupInput } from "../validation";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
+import { useSignupForm } from "../hooks/useSignupForm";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,19 +18,11 @@ export default function SignupPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupInput>({
-    resolver: zodResolver(signupSchema),
-    mode: "onTouched",
-    defaultValues: {
-      password: "user123",
-      confirmPassword: "user123",
-      role: "user",
-    },
-  });
+  } = useSignupForm();
 
   const onSubmit = async (data: SignupInput) => {
     const res = await signup(data);
-    alert(res.message);
+    toast.success(res.message);
     navigate("/verify-otp", { state: { email: res.data.email } });
   };
 

@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { type VerifyOtpInput } from "../validation";
 import { useVerifyOtpForm } from "../hooks/useVerifyForm";
 import { notify } from "../../../lib/notify";
+import { Mail, RefreshCw, Shield } from "lucide-react";
 
 const OTP_EXPIRY_SECONDS = 120;
 
@@ -11,6 +12,7 @@ export default function VerifyOtpPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [timeLeft, setTimeLeft] = useState(OTP_EXPIRY_SECONDS);
+  const [canResend] = useState(false);
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -70,6 +72,18 @@ export default function VerifyOtpPage() {
 
   return (
     <div className="space-y-6">
+      {/* Icon */}
+      <div className="mb-6 flex justify-center">
+        <div className="relative">
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 ring-2 ring-amber-500/30">
+            <Shield size={36} className="text-amber-400" />
+          </div>
+          <div className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 shadow-lg shadow-amber-500/50">
+            <Mail size={16} className="text-black" />
+          </div>
+        </div>
+      </div>
+
       {/* Heading */}
       <div className="text-center">
         <h1 className="mb-2 text-2xl font-bold">Verify your email</h1>
@@ -112,6 +126,30 @@ export default function VerifyOtpPage() {
           {errors.otp?.message || apiError}
         </p>
 
+        {/* Timer & Resend */}
+        <div className="mb-6 text-center">
+          {!canResend ? (
+            <p className="text-sm text-zinc-400">
+              Resend code in{" "}
+              <span className="font-semibold text-amber-400">
+                {String(minutes).padStart(2, "0")}:
+                {String(seconds).padStart(2, "0")}
+              </span>
+            </p>
+          ) : (
+            <button
+              onClick={handleResend}
+              className="group inline-flex items-center gap-2 text-sm font-medium text-amber-400 transition-colors hover:text-amber-300"
+            >
+              <RefreshCw
+                size={16}
+                className="transition-transform group-hover:rotate-180"
+              />
+              Resend Code
+            </button>
+          )}
+        </div>
+
         {/* Submit */}
         <button
           type="submit"
@@ -121,28 +159,35 @@ export default function VerifyOtpPage() {
           {loading ? "Verifying..." : "Verify code"}
         </button>
 
-        {/* Timer */}
-        <p className="text-center text-xs text-zinc-400">
-          OTP expires in{" "}
-          <span className="font-medium text-zinc-200">
-            {String(minutes).padStart(2, "0")}:
-            {String(seconds).padStart(2, "0")}
-          </span>
-        </p>
-
-        {/* Resend */}
-        <p className="text-center text-sm text-zinc-400">
-          Didn’t receive the code?{" "}
-          <button
-            type="button"
-            onClick={handleResend}
-            disabled={timeLeft > 0}
-            className="font-medium text-amber-400 hover:text-amber-300 disabled:text-zinc-500"
-          >
-            Resend
-          </button>
-        </p>
+        {/* Info Box */}
+        <div className="mt-6 rounded-xl border border-white/10 bg-zinc-900/60 p-4 backdrop-blur-xl">
+          <div className="flex gap-3">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-500/20">
+              <Mail size={16} className="text-blue-400" />
+            </div>
+            <div>
+              <p className="mb-1 text-sm font-semibold text-white">
+                Didn't receive the code?
+              </p>
+              <p className="text-xs text-zinc-400">
+                Check your spam folder or click resend to get a new code.
+              </p>
+            </div>
+          </div>
+        </div>
       </form>
+
+      {/* Trust indicators */}
+      <div className="mt-6 flex items-center justify-center gap-6 text-xs text-zinc-500">
+        <div className="flex items-center gap-1.5">
+          <div className="h-2 w-2 rounded-full bg-green-500" />
+          <span>Secure Verification</span>
+        </div>
+        <div className="h-4 w-px bg-zinc-800" />
+        <div className="flex items-center gap-1.5">
+          <span>Expires in 5 minutes</span>
+        </div>
+      </div>
     </div>
   );
 }

@@ -6,6 +6,9 @@ import LoginPage from "../features/auth/pages/LoginPage";
 import Unauthorized from "../shared/pages/Unauthorized";
 import RequireGuest from "../shared/guards/RequireGuest";
 import LandingPage from "../features/landing/pages/LandingPage";
+import UserLayout from "../layouts/UserLayout";
+import RequireAuth from "../shared/guards/RequireAuth";
+import UserDashboard from "../features/dashboard/pages/UserDashboard";
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
@@ -19,6 +22,15 @@ export const router = createBrowserRouter([
           { path: "/signup", element: <SignupPage /> },
           { path: "/verify-otp", element: <VerifyOtpPage /> },
         ],
+      },
+    ],
+  },
+  {
+    element: <RequireAuth />,
+    children: [
+      {
+        element: <UserLayout />,
+        children: [{ path: "/dashboard", element: <UserDashboard /> }],
       },
     ],
   },

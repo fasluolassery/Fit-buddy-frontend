@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
-import { verifyOtpSchema, type VerifyOtpInput } from "../validation";
+import { type VerifyOtpInput } from "../validation";
+import { useVerifyOtpForm } from "../hooks/useVerifyForm";
+import { notify } from "../../../lib/notify";
 
 const OTP_EXPIRY_SECONDS = 120;
 
@@ -26,7 +26,7 @@ export default function VerifyOtpPage() {
 
   const { verifyOtp, loading, apiError } = useAuth();
 
-  const email: string | undefined = location.state?.email;
+  const email: string = location.state?.email;
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -35,14 +35,11 @@ export default function VerifyOtpPage() {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<VerifyOtpInput>({
-    resolver: zodResolver(verifyOtpSchema),
-    defaultValues: { email, otp: "" },
-  });
+  } = useVerifyOtpForm(email);
 
   const onSubmit = async (data: VerifyOtpInput) => {
     const res = await verifyOtp(data);
-    alert(res.message);
+    notify.success(res.message);
     navigate("/login", { replace: true });
   };
 

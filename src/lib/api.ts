@@ -73,7 +73,12 @@ api.interceptors.response.use(
       );
     }
 
-    if (error.response.status === 401) {
+    if (
+      error.response.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry &&
+      store.getState().auth.accessToken
+    ) {
       originalRequest._retry = true;
 
       try {
@@ -82,9 +87,8 @@ api.interceptors.response.use(
 
         console.log("Refresh Res: ", refreshResponse);
         dispatch(tokenRefreshed({ accessToken }));
-        // console.log("auth state after refresh:", store.getState().auth);
-
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+
         return api(originalRequest);
       } catch (err) {
         console.log(

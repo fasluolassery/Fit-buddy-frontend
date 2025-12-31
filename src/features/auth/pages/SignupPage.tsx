@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { useSignupForm } from "../hooks/useSignupForm";
-import toast from "react-hot-toast";
+import { notify } from "../../../lib/notify";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +22,7 @@ export default function SignupPage() {
 
   const onSubmit = async (data: SignupInput) => {
     const res = await signup(data);
-    toast.success(res.message);
+    notify.success(res.message);
     navigate("/verify-otp", { state: { email: res.data.email } });
   };
 

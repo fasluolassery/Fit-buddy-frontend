@@ -1,43 +1,27 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { loginSchema, type LoginInput } from "../validation";
+import { type LoginInput } from "../validation";
 import { useAuth } from "../hooks/useAuth";
-import { authSuccess } from "../auth.slice";
-import { useAppDispatch } from "../../../shared/hooks/redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
+import { useLoginForm } from "../hooks/useLoginForm";
+import { notify } from "../../../lib/notify";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const { login, loading, apiError } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginInput>({
-    resolver: zodResolver(loginSchema),
-    mode: "onTouched",
-    defaultValues: {
-      password: "user123",
-    },
-  });
+  } = useLoginForm();
 
   const onSubmit = async (data: LoginInput) => {
     const res = await login(data);
-    const { user, accessToken } = res.data;
-    dispatch(
-      authSuccess({
-        user,
-        accessToken,
-      }),
-    );
-    alert(res.message);
+    notify.success(res.message);
     navigate("/dashboard");
   };
 

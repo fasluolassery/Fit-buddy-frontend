@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import toast from "react-hot-toast";
 import { clearGlobalError } from "../redux/global-error.slice";
+import { notify } from "../../lib/notify";
 
 export function GlobalErrorListener() {
   const dispatch = useAppDispatch();
@@ -10,7 +10,7 @@ export function GlobalErrorListener() {
   useEffect(() => {
     if (!message) return;
 
-    toast.error(message);
+    notify.error(message);
     dispatch(clearGlobalError());
   }, [message, dispatch]);
 

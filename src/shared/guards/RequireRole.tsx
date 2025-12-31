@@ -8,7 +8,6 @@ type Props = {
 
 export default function RequireRole({ allowedRoles }: Props) {
   const { user, isLoading } = useAppSelector((state) => state.auth);
-  console.log("RequireRole 5");
 
   if (isLoading) return <div>Loading....</div>;
 

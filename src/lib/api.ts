@@ -62,7 +62,14 @@ api.interceptors.response.use(
 
     if (!originalRequest || originalRequest._retry) {
       if (error.response.data) {
-        return Promise.reject(error.response.data);
+        return Promise.reject(
+          normalizeError({
+            message:
+              error.response.data.error.message ??
+              ERROR_MESSAGES.REQUEST_FAILED,
+            code: error.response.data.error.code ?? ERROR_CODES.REQUEST_FAILED,
+          }),
+        );
       }
 
       return Promise.reject(
@@ -113,7 +120,13 @@ api.interceptors.response.use(
     }
 
     if (error.response.data) {
-      return Promise.reject(error.response.data);
+      return Promise.reject(
+        normalizeError({
+          message:
+            error.response.data.error.message ?? ERROR_MESSAGES.REQUEST_FAILED,
+          code: error.response.data.error.code ?? ERROR_CODES.REQUEST_FAILED,
+        }),
+      );
     }
 
     return Promise.reject(

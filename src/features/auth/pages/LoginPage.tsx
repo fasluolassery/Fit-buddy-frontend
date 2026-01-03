@@ -130,10 +130,14 @@ export default function LoginPage() {
 
         <button
           type="button"
-          className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-white/10 bg-white/5 py-3 text-sm font-medium text-white transition-all duration-300 hover:border-white/20 hover:bg-white/10"
+          className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/70 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:border-amber-400"
         >
-          <FaGoogle className="text-zinc-400 transition-colors group-hover:text-white" />
-          <span>Continue with Google</span>
+          {/* liquid layer */}
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-amber-500/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+
+          {/* content */}
+          <FaGoogle className="relative z-10 h-4 w-4 text-zinc-400 transition-colors group-hover:text-white" />
+          <span className="relative z-10">Continue with Google</span>
         </button>
       </form>
     </div>

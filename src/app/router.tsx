@@ -1,14 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
 import SignupPage from "../features/auth/pages/SignupPage";
-import VerifyOtpPage from "../features/auth/pages/VerifyOtpPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import Unauthorized from "../shared/pages/Unauthorized";
 import RequireGuest from "../shared/guards/RequireGuest";
 import LandingPage from "../features/landing/pages/LandingPage";
-import UserLayout from "../layouts/UserLayout";
 import RequireAuth from "../shared/guards/RequireAuth";
+import UserLayout from "../layouts/UserLayout";
 import UserDashboard from "../features/dashboard/pages/UserDashboard";
+import VerifyOtpPage from "../features/auth/pages/VerifyOtpPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },

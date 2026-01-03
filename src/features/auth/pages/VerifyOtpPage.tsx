@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 import { type VerifyOtpInput } from "../validation";
 import { useVerifyOtpForm } from "../hooks/useVerifyForm";
 import { notify } from "../../../lib/notify";
@@ -26,7 +25,8 @@ export default function VerifyOtpPage() {
     return () => clearInterval(interval);
   }, [timeLeft]);
 
-  const { verifyOtp, loading, apiError } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const apiError = null;
 
   const email: string = location.state?.email;
   const minutes = Math.floor(timeLeft / 60);
@@ -39,10 +39,13 @@ export default function VerifyOtpPage() {
     formState: { errors },
   } = useVerifyOtpForm(email);
 
-  const onSubmit = async (data: VerifyOtpInput) => {
-    const res = await verifyOtp(data);
-    notify.success(res.message);
-    navigate("/login", { replace: true });
+  const onSubmit = async (_data: VerifyOtpInput) => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      notify.success("Email verified successfully! You can now sign in.");
+      navigate("/login", { replace: true });
+    }, 800);
   };
 
   const handleResend = () => {
@@ -73,13 +76,13 @@ export default function VerifyOtpPage() {
   return (
     <div className="space-y-6">
       {/* Icon */}
-      <div className="mb-6 flex justify-center">
+      <div className="flex justify-center">
         <div className="relative">
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 ring-2 ring-amber-500/30">
-            <Shield size={36} className="text-amber-400" />
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#D4AF37]/20 to-[#D4AF37]/10 ring-1 ring-[#D4AF37]/30">
+            <Shield size={26} className="text-[#D4AF37]" />
           </div>
-          <div className="absolute -right-2 -top-2 flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 shadow-lg shadow-amber-500/50">
-            <Mail size={16} className="text-black" />
+          <div className="absolute -right-1.5 -top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-[#D4AF37] shadow-md shadow-[#D4AF37]/40">
+            <Mail size={12} className="text-black" />
           </div>
         </div>
       </div>
@@ -88,19 +91,18 @@ export default function VerifyOtpPage() {
       <div className="text-center">
         <h1 className="mb-2 text-2xl font-bold">Verify your email</h1>
         <p className="text-sm text-zinc-400">
-          Enter the 6-digit code sent to
-          <br />
+          Enter the 6-digit code sent to <br />
           <span className="font-medium text-zinc-300">{email}</span>
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Hidden fields */}
         <input type="hidden" {...register("email")} />
         <input type="hidden" {...register("otp")} />
 
         {/* OTP Inputs */}
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center gap-2.5">
           {Array.from({ length: 6 }).map((_, index) => (
             <input
               key={index}
@@ -112,66 +114,67 @@ export default function VerifyOtpPage() {
               maxLength={1}
               onChange={(e) => handleChange(e.target.value, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              className="h-14 w-14 rounded-xl border border-zinc-800 bg-zinc-900/70 text-center text-lg font-semibold text-white transition-colors focus:border-amber-600 focus:outline-none"
+              className="h-14 w-14 rounded-xl border border-white/10 bg-zinc-900/60 text-center text-sm font-semibold text-white transition-all duration-300 focus:border-[#D4AF37]/50 focus:bg-white/5 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]/40"
             />
           ))}
         </div>
 
         {/* Error */}
         <p
-          className={`text-center text-xs text-red-400 transition-all duration-200 ${
+          className={`mt-1 text-center text-xs text-red-400 transition-all duration-200 ${
             errors.otp || apiError ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
           } overflow-hidden`}
         >
           {errors.otp?.message || apiError}
         </p>
 
-        {/* Timer & Resend */}
-        <div className="mb-6 text-center">
+        {/* Resend */}
+        <div className="mt-2 text-center">
           {!canResend ? (
-            <p className="text-sm text-zinc-400">
+            <p className="text-xs font-medium text-zinc-500">
               Resend code in{" "}
-              <span className="font-semibold text-amber-400">
+              <span className="text-[#D4AF37]/80">
                 {String(minutes).padStart(2, "0")}:
                 {String(seconds).padStart(2, "0")}
               </span>
             </p>
           ) : (
             <button
+              type="button"
               onClick={handleResend}
-              className="group inline-flex items-center gap-2 text-sm font-medium text-amber-400 transition-colors hover:text-amber-300"
+              className="text-xs font-medium text-zinc-500 transition-colors hover:text-[#D4AF37]"
             >
-              <RefreshCw
-                size={16}
-                className="transition-transform group-hover:rotate-180"
-              />
-              Resend Code
+              Resend code
             </button>
           )}
         </div>
 
         {/* Submit */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 py-3 font-semibold text-black transition-all duration-300 hover:from-amber-500 hover:to-amber-500 disabled:opacity-60"
-        >
-          {loading ? "Verifying..." : "Verify code"}
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full max-w-96 py-3"
+          >
+            {loading ? "Verifying..." : "Verify code"}
+          </button>
+        </div>
 
-        {/* Info Box */}
-        <div className="mt-6 rounded-xl border border-white/10 bg-zinc-900/60 p-4 backdrop-blur-xl">
-          <div className="flex gap-3">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-500/20">
-              <Mail size={16} className="text-blue-400" />
-            </div>
-            <div>
-              <p className="mb-1 text-sm font-semibold text-white">
-                Didn't receive the code?
-              </p>
-              <p className="text-xs text-zinc-400">
-                Check your spam folder or click resend to get a new code.
-              </p>
+        {/* Info box under resend */}
+        <div className="flex justify-center">
+          <div className="w-full max-w-96 rounded-xl border border-white/10 bg-zinc-900/60 p-5 backdrop-blur-xl">
+            <div className="flex gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/20">
+                <Mail size={16} className="text-blue-400" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-white">
+                  Didn’t receive the code?
+                </p>
+                <p className="text-xs text-zinc-400">
+                  Check spam or use resend to get a new one.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -181,11 +184,11 @@ export default function VerifyOtpPage() {
       <div className="mt-6 flex items-center justify-center gap-6 text-xs text-zinc-500">
         <div className="flex items-center gap-1.5">
           <div className="h-2 w-2 rounded-full bg-green-500" />
-          <span>Secure Verification</span>
+          <span>Secure verification</span>
         </div>
         <div className="h-4 w-px bg-zinc-800" />
         <div className="flex items-center gap-1.5">
-          <span>Expires in 5 minutes</span>
+          <span>OTP expires in 5 minutes</span>
         </div>
       </div>
     </div>

@@ -24,5 +24,12 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "__legacy__/pages/AuthLayoutOld.tsx",
+    "__legacy__/pages/UserLayoutMain.tsx",
+    "__legacy__/pages/UserMain.tsx",
+    "__legacy__/pages/SignupPageOld.tsx",
+    "__legacy__/pages/VerifyOtpPageOld.tsx"
+  ]
 }

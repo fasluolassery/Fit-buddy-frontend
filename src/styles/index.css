@@ -1,8 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    font-family:
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Outfit", sans-serif;
+  }
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
@@ -12,5 +31,63 @@
     box-shadow: 0 0 0 1000px rgba(24, 24, 27, 0.7) inset;
     caret-color: #ffffff;
     transition: background-color 9999s ease-in-out 0s;
+  }
+
+  body {
+    @apply bg-black text-white selection:bg-[#D4AF37]/30 selection:text-[#D4AF37]/20;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply border border-white/10 bg-zinc-900/40 backdrop-blur-xl;
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:border-[#D4AF37]/20 hover:bg-zinc-900/60;
+  }
+
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-zinc-100 via-[#D4AF37] to-zinc-100 bg-clip-text text-transparent;
+  }
+
+  .input-luxury {
+    @apply w-full max-w-full rounded-xl border border-white/5 bg-white/5 px-4 py-2.5 text-sm text-white transition-all duration-300 placeholder:text-zinc-500 focus:border-[#D4AF37]/50 focus:bg-white/10 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]/50;
+  }
+
+  .btn-primary {
+    @apply relative overflow-hidden rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#AA8B2E] px-6 py-2.5 text-sm font-bold text-black transition-all duration-300 hover:opacity-90 active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply rounded-xl border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-6 py-3 font-semibold text-[#D4AF37] transition-all duration-300 hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/10 active:scale-[0.98];
+  }
+
+  /* Custom Premium Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-[#D4AF37]/20 transition-colors hover:bg-[#D4AF37]/40;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 }

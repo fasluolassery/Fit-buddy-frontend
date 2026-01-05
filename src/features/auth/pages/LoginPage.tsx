@@ -44,7 +44,7 @@ export default function LoginPage() {
               <input
                 {...register("email")}
                 type="email"
-                placeholder="alex@example.com"
+                placeholder="Email Address"
                 className={`input-luxury pl-10 ${
                   errors.email ? "border-red-500/50" : ""
                 }`}
@@ -95,7 +95,7 @@ export default function LoginPage() {
             <div className="mt-2 flex justify-end">
               <Link
                 to="/forgot-password"
-                className="text-xs font-semibold text-[#D4AF37]/80 transition-colors hover:text-[#D4AF37]"
+                className="text-xs font-medium text-zinc-500 transition-colors hover:text-amber-400"
               >
                 Forgot password?
               </Link>
@@ -136,7 +136,7 @@ export default function LoginPage() {
           <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-amber-500/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
           {/* content */}
-          <FaGoogle className="relative z-10 h-4 w-4 text-zinc-400 transition-colors group-hover:text-white" />
+          <FaGoogle className="text-zinc-400 transition-colors group-hover:text-white" />
           <span className="relative z-10">Continue with Google</span>
         </button>
       </form>

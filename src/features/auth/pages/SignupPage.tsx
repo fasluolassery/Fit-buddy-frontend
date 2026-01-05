@@ -211,7 +211,7 @@ export default function SignupPage() {
           <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-amber-500/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
           {/* content */}
-          <FaGoogle className="relative z-10 h-4 w-4 text-zinc-400 transition-colors group-hover:text-white" />
+          <FaGoogle className="text-zinc-400 transition-colors group-hover:text-white" />
           <span className="relative z-10">Continue with Google</span>
         </button>
       </form>

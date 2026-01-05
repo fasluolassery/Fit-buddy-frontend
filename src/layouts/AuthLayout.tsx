@@ -87,7 +87,7 @@ export default function AuthLayout() {
                     onClick={() => navigate("/signup")}
                     className={`relative z-10 flex-1 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${location.pathname.includes("signup") ? "text-[#D4AF37]" : "text-zinc-500 hover:text-white"}`}
                   >
-                    Join Elite
+                    Sign Up
                   </button>
                 </div>
               </div>

@@ -8,11 +8,19 @@ import { useAuth } from "../hooks/useAuth";
 
 const OTP_EXPIRY_SECONDS = 10;
 
+const getInitialTimeLeft = () => {
+  const stored = localStorage.getItem("otpRequestedAt");
+  if (!stored) return 0;
+
+  const elapsedSeconds = Math.floor((Date.now() - Number(stored)) / 1000);
+
+  return Math.max(OTP_EXPIRY_SECONDS - elapsedSeconds, 0);
+};
+
 export default function VerifyOtpPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [timeLeft, setTimeLeft] = useState(OTP_EXPIRY_SECONDS);
-  // const [canResend] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(getInitialTimeLeft);
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -41,6 +49,7 @@ export default function VerifyOtpPage() {
 
   const onSubmit = async (data: VerifyOtpInput) => {
     const res = await verifyOtp(data);
+    localStorage.removeItem("otpRequestedAt");
     notify.success(res.message);
     navigate("/login", { replace: true });
   };
@@ -49,6 +58,8 @@ export default function VerifyOtpPage() {
     if (timeLeft > 0) return;
 
     //TODO: CALL RESEND API
+
+    localStorage.setItem("otpRequestedAt", Date.now().toString());
     setTimeLeft(OTP_EXPIRY_SECONDS);
   };
 
@@ -189,7 +200,7 @@ export default function VerifyOtpPage() {
         </div>
         <div className="h-4 w-px bg-zinc-800" />
         <div className="flex items-center gap-1.5">
-          <span>OTP expires in 5 minutes</span>
+          <span>OTP expires in 2 minutes</span>
         </div>
       </div>
     </div>

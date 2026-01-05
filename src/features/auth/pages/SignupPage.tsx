@@ -1,6 +1,6 @@
 import { type SignupInput } from "../validation";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff, User, Mail, Phone, Lock } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { useSignupForm } from "../hooks/useSignupForm";
@@ -10,9 +10,15 @@ import { useAuth } from "../hooks/useAuth";
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [otpStarted, setOtpStarted] = useState(false);
 
   const navigate = useNavigate();
   const { signup, loading, apiError } = useAuth();
+
+  useEffect(() => {
+    if (!otpStarted) return;
+    localStorage.setItem("otpRequestedAt", Date.now().toString());
+  }, [otpStarted]);
 
   const {
     register,
@@ -22,6 +28,7 @@ export default function SignupPage() {
 
   const onSubmit = async (data: SignupInput) => {
     const res = await signup(data);
+    setOtpStarted(true);
     notify.success(res.message);
     navigate("/verify-otp", { state: { email: res.data.email } });
   };

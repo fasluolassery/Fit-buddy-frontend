@@ -74,13 +74,13 @@ export default function AuthLayout() {
                   />
 
                   <button
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate("/login", { replace: true })}
                     className={`relative z-10 flex-1 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${!location.pathname.includes("signup") ? "text-[#D4AF37]" : "text-zinc-500 hover:text-white"}`}
                   >
                     Sign In
                   </button>
                   <button
-                    onClick={() => navigate("/signup")}
+                    onClick={() => navigate("/signup", { replace: true })}
                     className={`relative z-10 flex-1 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${location.pathname.includes("signup") ? "text-[#D4AF37]" : "text-zinc-500 hover:text-white"}`}
                   >
                     Sign Up

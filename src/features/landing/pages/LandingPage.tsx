@@ -17,6 +17,11 @@ import { useNavigate } from "react-router-dom";
 export default function FitBuddy() {
   const navigate = useNavigate();
 
+  const selectRole = (role: "user" | "trainer") => {
+    sessionStorage.setItem("signupRole", role);
+    navigate("/signup", { state: { role } });
+  };
+
   return (
     <div
       id="page-root"
@@ -86,7 +91,7 @@ export default function FitBuddy() {
                 Sign In
               </button> */}
               <button
-                onClick={() => navigate("/signup", { state: { role: "user" } })}
+                onClick={() => selectRole("user")}
                 className="rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-2.5 text-sm font-semibold text-black shadow-lg shadow-amber-900/50 transition-all duration-300 hover:from-amber-400 hover:to-amber-500"
               >
                 Get Started
@@ -131,9 +136,7 @@ export default function FitBuddy() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <button
-                    onClick={() =>
-                      navigate("/signup", { state: { role: "user" } })
-                    }
+                    onClick={() => selectRole("user")}
                     className="group relative overflow-hidden rounded-2xl border border-zinc-700 bg-gradient-to-br from-zinc-800 to-zinc-900 p-6 transition-all duration-300 hover:border-amber-800 hover:from-amber-950 hover:to-zinc-900"
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-600/0 to-amber-600/0 transition-all duration-300 group-hover:from-amber-600/10 group-hover:to-transparent"></div>
@@ -148,9 +151,7 @@ export default function FitBuddy() {
                     </div>
                   </button>
                   <button
-                    onClick={() =>
-                      navigate("/signup", { state: { role: "trainer" } })
-                    }
+                    onClick={() => selectRole("trainer")}
                     className="group relative overflow-hidden rounded-2xl border border-zinc-700 bg-gradient-to-br from-zinc-800 to-zinc-900 p-6 transition-all duration-300 hover:border-amber-800 hover:from-amber-950 hover:to-zinc-900"
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-600/0 to-amber-600/0 transition-all duration-300 group-hover:from-amber-600/10 group-hover:to-transparent"></div>
@@ -559,7 +560,7 @@ export default function FitBuddy() {
                 personalized templates today.
               </p>
               <button
-                onClick={() => navigate("/signup", { state: { role: "user" } })}
+                onClick={() => selectRole("user")}
                 className="rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-12 py-5 text-lg font-bold text-black shadow-2xl shadow-amber-900/50 transition-all duration-300 hover:from-amber-400 hover:to-amber-500"
               >
                 Start Your Journey

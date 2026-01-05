@@ -1,5 +1,5 @@
 import { type SignupInput } from "../validation";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Eye, EyeOff, User, Mail, Phone, Lock } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
@@ -13,23 +13,33 @@ export default function SignupPage() {
   const [otpStarted, setOtpStarted] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { signup, loading, apiError } = useAuth();
+
+  const role =
+    location.state?.role ||
+    (sessionStorage.getItem("signupRole") as "user" | "trainer" | null);
 
   useEffect(() => {
     if (!otpStarted) return;
     localStorage.setItem("otpRequestedAt", Date.now().toString());
   }, [otpStarted]);
 
+  useEffect(() => {
+    if (!role) navigate("/", { replace: true });
+  }, [role, navigate]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useSignupForm();
+  } = useSignupForm(role);
 
   const onSubmit = async (data: SignupInput) => {
     const res = await signup(data);
     setOtpStarted(true);
     notify.success(res.message);
+    sessionStorage.removeItem("signupRole");
     navigate("/verify-otp", { state: { email: res.data.email } });
   };
 

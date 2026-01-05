@@ -5,13 +5,13 @@ import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { useLoginForm } from "../hooks/useLoginForm";
 import { notify } from "../../../lib/notify";
+import { useAuth } from "../hooks/useAuth";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const apiError = null;
+  const { login, loading, apiError } = useAuth();
 
   const {
     register,
@@ -19,14 +19,10 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useLoginForm();
 
-  const onSubmit = async (_data: LoginInput) => {
-    setLoading(true);
-    // Simulate a short delay for premium feel
-    setTimeout(() => {
-      setLoading(false);
-      notify.success("Welcome back to FitBuddy!");
-      navigate("/dashboard");
-    }, 800);
+  const onSubmit = async (data: LoginInput) => {
+    const res = await login(data);
+    notify.success(res.message);
+    navigate("/dashboard");
   };
 
   return (

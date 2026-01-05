@@ -1,10 +1,16 @@
 import { useState } from "react";
 import {
   loginRequest,
+  resendOtpRequest,
   signupRequest,
   verifyOtpRequest,
 } from "../auth.services";
-import type { LoginInput, SignupInput, VerifyOtpInput } from "../validation";
+import type {
+  LoginInput,
+  ResendOtpInput,
+  SignupInput,
+  VerifyOtpInput,
+} from "../validation";
 import type { ApiErrorResponse } from "../../../shared/types/api";
 import { useAppDispatch } from "../../../shared/hooks/redux";
 import { authSuccess } from "../auth.slice";
@@ -39,6 +45,9 @@ export function useAuth() {
   const verifyOtp = (data: VerifyOtpInput) =>
     handleRequest(() => verifyOtpRequest(data));
 
+  const resendOtp = (data: ResendOtpInput) =>
+    handleRequest(() => resendOtpRequest(data));
+
   const login = (data: LoginInput) =>
     handleRequest(async () => {
       const res = await loginRequest(data);
@@ -57,6 +66,7 @@ export function useAuth() {
   return {
     signup,
     verifyOtp,
+    resendOtp,
     login,
     loading,
     apiError,

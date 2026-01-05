@@ -3,10 +3,16 @@ import type { ApiResponse } from "../../shared/types/api";
 import type {
   LoginResponseData,
   MeResponseData,
+  ResendOtpResponseData,
   SignupResponseData,
   VerifyOtpResponseData,
 } from "./types";
-import type { LoginInput, SignupInput, VerifyOtpInput } from "./validation";
+import type {
+  LoginInput,
+  ResendOtpInput,
+  SignupInput,
+  VerifyOtpInput,
+} from "./validation";
 
 export const signupRequest = (
   data: SignupInput,
@@ -21,6 +27,14 @@ export const verifyOtpRequest = (
 ): Promise<ApiResponse<VerifyOtpResponseData>> => {
   return api
     .post<ApiResponse<VerifyOtpResponseData>>("/auth/verify-otp", data)
+    .then(({ data }) => data);
+};
+
+export const resendOtpRequest = (
+  data: ResendOtpInput,
+): Promise<ApiResponse<ResendOtpResponseData>> => {
+  return api
+    .post<ApiResponse<VerifyOtpResponseData>>("/auth/resend-otp", data)
     .then(({ data }) => data);
 };
 

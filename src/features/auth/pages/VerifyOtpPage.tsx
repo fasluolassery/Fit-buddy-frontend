@@ -34,7 +34,7 @@ export default function VerifyOtpPage() {
     return () => clearInterval(interval);
   }, [timeLeft]);
 
-  const { verifyOtp, loading, apiError } = useAuth();
+  const { verifyOtp, resendOtp, loading, apiError } = useAuth();
 
   const email: string = location.state?.email;
   const minutes = Math.floor(timeLeft / 60);
@@ -54,12 +54,11 @@ export default function VerifyOtpPage() {
     navigate("/login", { replace: true });
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (timeLeft > 0) return;
-
-    //TODO: CALL RESEND API
-
+    const res = await resendOtp({ email });
     localStorage.setItem("otpRequestedAt", Date.now().toString());
+    notify.success(res.message);
     setTimeLeft(OTP_EXPIRY_SECONDS);
   };
 

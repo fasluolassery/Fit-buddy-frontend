@@ -9,6 +9,10 @@ export interface VerifyOtpResponseData {
   isVerified: boolean;
 }
 
+export interface ResendOtpResponseData {
+  email: string;
+}
+
 export interface LoginResponseData {
   accessToken: string;
   user: {

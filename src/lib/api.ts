@@ -9,15 +9,18 @@ import {
   ERROR_MESSAGES,
 } from "../shared/constants/error-messages";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const NGROK_BASE_URL = import.meta.env.VITE_API_NGROK_BASE_URL;
+
 const { dispatch } = store;
 
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: BASE_URL,
   withCredentials: true,
 });
 
 export const refreshApi = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: BASE_URL,
   withCredentials: true,
 });
 

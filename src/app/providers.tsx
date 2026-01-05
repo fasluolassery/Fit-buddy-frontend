@@ -13,7 +13,11 @@ type Props = {
 export function AppProviders({ children }: Props) {
   return (
     <Provider store={store}>
-      <Toaster position="top-right" toastOptions={toasterOptions} />
+      <Toaster
+        position="top-right"
+        toastOptions={toasterOptions}
+        containerStyle={{ top: "96px" }}
+      />
       <GlobalErrorListener />
       <AuthInitializer>{children}</AuthInitializer>
     </Provider>

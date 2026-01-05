@@ -12,16 +12,29 @@ import {
   Award,
   CheckCircle2,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function FitBuddy() {
+  const navigate = useNavigate();
+
   return (
-    <div className="min-h-screen overflow-x-hidden bg-black text-white">
+    <div
+      id="page-root"
+      className="min-h-screen overflow-x-hidden bg-black text-white"
+    >
       {/* Liquid Navbar - iOS Style */}
       <nav className="fixed left-1/2 top-4 z-50 w-[95%] max-w-6xl -translate-x-1/2">
         <div className="rounded-3xl border border-white/10 bg-zinc-900/40 px-8 py-4 shadow-2xl shadow-black/50 backdrop-blur-2xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-12">
-              <div className="flex items-center gap-3">
+              <div
+                onClick={() =>
+                  document
+                    .getElementById("page-root")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="flex cursor-pointer items-center gap-3"
+              >
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 bg-white/5">
                   <span className="text-lg font-bold tracking-tight text-white">
                     F
@@ -34,31 +47,48 @@ export default function FitBuddy() {
               </div>
 
               <div className="hidden gap-8 text-sm lg:flex">
-                <a
-                  href="#features"
+                <button
+                  onClick={() =>
+                    document
+                      .getElementById("features")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
                   className="text-zinc-400 transition-all duration-300 hover:text-white"
                 >
                   Features
-                </a>
-                <a
-                  href="#trainers"
+                </button>
+
+                <button
+                  onClick={() =>
+                    document
+                      .getElementById("trainers")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
                   className="text-zinc-400 transition-all duration-300 hover:text-white"
                 >
                   Find Trainers
-                </a>
-                <a
-                  href="#pricing"
+                </button>
+
+                <button
+                  onClick={() =>
+                    document
+                      .getElementById("pricing")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
                   className="text-zinc-400 transition-all duration-300 hover:text-white"
                 >
                   Pricing
-                </a>
+                </button>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <button className="rounded-xl px-6 py-2.5 text-sm text-zinc-300 transition-all duration-300 hover:bg-white/5 hover:text-white">
+              {/* <button className="rounded-xl px-6 py-2.5 text-sm text-zinc-300 transition-all duration-300 hover:bg-white/5 hover:text-white">
                 Sign In
-              </button>
-              <button className="rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-2.5 text-sm font-semibold text-black shadow-lg shadow-amber-900/50 transition-all duration-300 hover:from-amber-400 hover:to-amber-500">
+              </button> */}
+              <button
+                onClick={() => navigate("/signup", { state: { role: "user" } })}
+                className="rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-2.5 text-sm font-semibold text-black shadow-lg shadow-amber-900/50 transition-all duration-300 hover:from-amber-400 hover:to-amber-500"
+              >
                 Get Started
               </button>
             </div>
@@ -100,7 +130,12 @@ export default function FitBuddy() {
                   Join FitBuddy As:
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <button className="group relative overflow-hidden rounded-2xl border border-zinc-700 bg-gradient-to-br from-zinc-800 to-zinc-900 p-6 transition-all duration-300 hover:border-amber-800 hover:from-amber-950 hover:to-zinc-900">
+                  <button
+                    onClick={() =>
+                      navigate("/signup", { state: { role: "user" } })
+                    }
+                    className="group relative overflow-hidden rounded-2xl border border-zinc-700 bg-gradient-to-br from-zinc-800 to-zinc-900 p-6 transition-all duration-300 hover:border-amber-800 hover:from-amber-950 hover:to-zinc-900"
+                  >
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-600/0 to-amber-600/0 transition-all duration-300 group-hover:from-amber-600/10 group-hover:to-transparent"></div>
                     <div className="relative">
                       <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-800 transition-all duration-300 group-hover:bg-amber-950/50">
@@ -112,7 +147,12 @@ export default function FitBuddy() {
                       </div>
                     </div>
                   </button>
-                  <button className="group relative overflow-hidden rounded-2xl border border-zinc-700 bg-gradient-to-br from-zinc-800 to-zinc-900 p-6 transition-all duration-300 hover:border-amber-800 hover:from-amber-950 hover:to-zinc-900">
+                  <button
+                    onClick={() =>
+                      navigate("/signup", { state: { role: "trainer" } })
+                    }
+                    className="group relative overflow-hidden rounded-2xl border border-zinc-700 bg-gradient-to-br from-zinc-800 to-zinc-900 p-6 transition-all duration-300 hover:border-amber-800 hover:from-amber-950 hover:to-zinc-900"
+                  >
                     <div className="absolute inset-0 bg-gradient-to-br from-amber-600/0 to-amber-600/0 transition-all duration-300 group-hover:from-amber-600/10 group-hover:to-transparent"></div>
                     <div className="relative">
                       <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-800 transition-all duration-300 group-hover:bg-amber-950/50">
@@ -505,7 +545,7 @@ export default function FitBuddy() {
       </section>
 
       {/* Final CTA */}
-      <section className="relative px-6 py-32">
+      <section id="trainers" className="relative px-6 py-32">
         <div className="mx-auto max-w-4xl">
           <div className="relative overflow-hidden rounded-[3rem] border border-amber-900/30 bg-gradient-to-br from-amber-950/30 via-zinc-900/50 to-black p-16 backdrop-blur-xl">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-600/10 to-transparent"></div>
@@ -518,7 +558,10 @@ export default function FitBuddy() {
                 Join thousands transforming their fitness journey. Start with
                 personalized templates today.
               </p>
-              <button className="rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-12 py-5 text-lg font-bold text-black shadow-2xl shadow-amber-900/50 transition-all duration-300 hover:from-amber-400 hover:to-amber-500">
+              <button
+                onClick={() => navigate("/signup", { state: { role: "user" } })}
+                className="rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-12 py-5 text-lg font-bold text-black shadow-2xl shadow-amber-900/50 transition-all duration-300 hover:from-amber-400 hover:to-amber-500"
+              >
                 Start Your Journey
               </button>
               <div className="mt-8 text-sm text-zinc-500">
@@ -535,17 +578,16 @@ export default function FitBuddy() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 grid gap-8 md:grid-cols-4">
             <div>
-              <div className="mb-4 flex items-center gap-2">
-                <div className="relative h-10 w-10">
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-2xl font-black text-black">F</span>
-                  </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-black bg-gradient-to-br from-emerald-400 to-emerald-600"></div>
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 bg-white/5">
+                  <span className="text-lg font-bold tracking-tight text-white">
+                    F
+                  </span>
                 </div>
-                <div className="bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-2xl font-bold text-transparent">
-                  FitBuddy
-                </div>
+
+                <span className="text-xl font-medium tracking-tight text-white">
+                  Fit<span className="text-amber-300">Buddy</span>
+                </span>
               </div>
               <p className="text-sm text-zinc-500">
                 Your fitness companion for every journey.

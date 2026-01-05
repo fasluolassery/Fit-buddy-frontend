@@ -9,9 +9,15 @@ import RequireAuth from "../shared/guards/RequireAuth";
 import UserLayout from "../layouts/UserLayout";
 import UserDashboard from "../features/dashboard/pages/UserDashboard";
 import VerifyOtpPage from "../features/auth/pages/VerifyOtpPage";
+import TrainerDashboard from "../features/dashboard/pages/TrainerDashboard";
+import TrainerLayout from "../layouts/TrainerLayout";
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
+  {
+    element: <TrainerLayout />,
+    children: [{ path: "/td", element: <TrainerDashboard /> }],
+  },
   {
     element: <RequireGuest />,
     children: [

@@ -5,14 +5,14 @@ import { Eye, EyeOff, User, Mail, Phone, Lock } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { useSignupForm } from "../hooks/useSignupForm";
 import { notify } from "../../../lib/notify";
+import { useAuth } from "../hooks/useAuth";
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const apiError = null;
+  const { signup, loading, apiError } = useAuth();
 
   const {
     register,
@@ -21,12 +21,9 @@ export default function SignupPage() {
   } = useSignupForm();
 
   const onSubmit = async (data: SignupInput) => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      notify.success("Account created! Please verify your email.");
-      navigate("/verify-otp", { state: { email: data.email } });
-    }, 1000);
+    const res = await signup(data);
+    notify.success(res.message);
+    navigate("/verify-otp", { state: { email: res.data.email } });
   };
 
   return (
@@ -34,7 +31,6 @@ export default function SignupPage() {
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
         <div className="space-y-3">
-          {/* Name */}
           {/* Name */}
           <div>
             <div className="relative">
@@ -61,7 +57,6 @@ export default function SignupPage() {
           </div>
 
           {/* Email */}
-          {/* Email */}
           <div>
             <div className="relative">
               <Mail
@@ -87,7 +82,6 @@ export default function SignupPage() {
           </div>
 
           {/* Phone */}
-          {/* Phone */}
           <div>
             <div className="relative">
               <Phone
@@ -112,7 +106,6 @@ export default function SignupPage() {
             </p>
           </div>
 
-          {/* Password */}
           {/* Password */}
           <div>
             <div className="relative">
@@ -146,7 +139,6 @@ export default function SignupPage() {
             </p>
           </div>
 
-          {/* Confirm Password */}
           {/* Confirm Password */}
           <div>
             <div className="relative">

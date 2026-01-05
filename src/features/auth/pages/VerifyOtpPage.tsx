@@ -4,14 +4,15 @@ import { type VerifyOtpInput } from "../validation";
 import { useVerifyOtpForm } from "../hooks/useVerifyForm";
 import { notify } from "../../../lib/notify";
 import { Mail, RefreshCw, Shield } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
-const OTP_EXPIRY_SECONDS = 120;
+const OTP_EXPIRY_SECONDS = 10;
 
 export default function VerifyOtpPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [timeLeft, setTimeLeft] = useState(OTP_EXPIRY_SECONDS);
-  const [canResend] = useState(false);
+  // const [canResend] = useState(false);
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -25,8 +26,7 @@ export default function VerifyOtpPage() {
     return () => clearInterval(interval);
   }, [timeLeft]);
 
-  const [loading, setLoading] = useState(false);
-  const apiError = null;
+  const { verifyOtp, loading, apiError } = useAuth();
 
   const email: string = location.state?.email;
   const minutes = Math.floor(timeLeft / 60);
@@ -39,13 +39,10 @@ export default function VerifyOtpPage() {
     formState: { errors },
   } = useVerifyOtpForm(email);
 
-  const onSubmit = async (_data: VerifyOtpInput) => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      notify.success("Email verified successfully! You can now sign in.");
-      navigate("/login", { replace: true });
-    }, 800);
+  const onSubmit = async (data: VerifyOtpInput) => {
+    const res = await verifyOtp(data);
+    notify.success(res.message);
+    navigate("/login", { replace: true });
   };
 
   const handleResend = () => {
@@ -130,7 +127,7 @@ export default function VerifyOtpPage() {
 
         {/* Resend */}
         <div className="mt-2 text-center">
-          {!canResend ? (
+          {timeLeft > 0 ? (
             <p className="text-xs font-medium text-zinc-500">
               Resend code in{" "}
               <span className="text-[#D4AF37]/80">
@@ -142,9 +139,13 @@ export default function VerifyOtpPage() {
             <button
               type="button"
               onClick={handleResend}
-              className="text-xs font-medium text-zinc-500 transition-colors hover:text-[#D4AF37]"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 transition-colors hover:text-[#D4AF37]"
             >
-              Resend code
+              <RefreshCw
+                size={14}
+                className="transition-transform group-hover:rotate-180"
+              />
+              <span>Resend code</span>
             </button>
           )}
         </div>

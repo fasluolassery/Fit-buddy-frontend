@@ -21,18 +21,18 @@ export default function FitBuddy() {
         <div className="rounded-3xl border border-white/10 bg-zinc-900/40 px-8 py-4 shadow-2xl shadow-black/50 backdrop-blur-2xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-12">
-              <div className="flex items-center gap-2">
-                <div className="relative h-10 w-10">
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-2xl font-black text-black">F</span>
-                  </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-black bg-gradient-to-br from-emerald-400 to-emerald-600"></div>
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 bg-white/5">
+                  <span className="text-lg font-bold tracking-tight text-white">
+                    F
+                  </span>
                 </div>
-                <div className="bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-500 bg-clip-text text-2xl font-bold text-transparent">
-                  FitBuddy
-                </div>
+
+                <span className="text-xl font-medium tracking-tight text-white">
+                  Fit<span className="text-amber-300">Buddy</span>
+                </span>
               </div>
+
               <div className="hidden gap-8 text-sm lg:flex">
                 <a
                   href="#features"

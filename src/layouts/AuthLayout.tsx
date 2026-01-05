@@ -15,19 +15,15 @@ export default function AuthLayout() {
       {/* Header */}
       <header className="relative z-10 px-8 py-3">
         <Link to="/" className="group/logo flex items-center gap-3">
-          <div className="border-brand-primary/20 bg-brand-primary/5 relative flex h-11 w-11 items-center justify-center rounded-xl border backdrop-blur-md">
-            <Crown
-              size={22}
-              className="text-brand-primary"
-              fill="currentColor"
-            />
-          </div>
-          <div className="flex flex-col tracking-widest">
-            <span className="text-lg font-black leading-none text-white">
-              FITBUDDY
-            </span>
-            <span className="text-brand-primary/80 mt-1 text-[9px] font-bold uppercase">
-              ELITE
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/15 bg-white/5">
+              <span className="text-lg font-bold tracking-tight text-white">
+                F
+              </span>
+            </div>
+
+            <span className="text-xl font-medium tracking-tight text-white">
+              Fit<span className="text-amber-300">Buddy</span>
             </span>
           </div>
         </Link>

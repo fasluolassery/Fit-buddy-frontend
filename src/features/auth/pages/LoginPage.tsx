@@ -1,16 +1,18 @@
 import { type LoginInput } from "../validation";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
-import { FaGoogle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { Mail } from "lucide-react";
 import { useLoginForm } from "../hooks/useLoginForm";
 import { notify } from "../../../lib/notify";
 import { useAuth } from "../hooks/useAuth";
 import { getHomeRoute } from "../../../shared/utils/auth.utils";
+import { InputField } from "../../../shared/components/form/InputField";
+import { PasswordField } from "../../../shared/components/form/PasswordField";
+import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButton";
+import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
+import { Divider } from "../../../shared/components/ui/Divider";
+import { GoogleAuthButton } from "../components/GoogleAuthButton";
 
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
-
   const navigate = useNavigate();
   const { login, loading, apiError } = useAuth();
 
@@ -28,114 +30,39 @@ export default function LoginPage() {
 
   return (
     <div className="mx-auto w-full max-w-sm space-y-4">
-      {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-4">
-          {/* Email */}
-          <div>
-            <div className="relative">
-              <Mail
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
-                size={18}
-              />
-              <input
-                {...register("email")}
-                type="email"
-                placeholder="Email Address"
-                className={`input-luxury pl-10 ${
-                  errors.email ? "border-red-500/50" : ""
-                }`}
-              />
-            </div>
-            <p
-              className={`mt-1 text-xs text-red-400 transition-all duration-200 ${
-                errors.email ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
-              } overflow-hidden`}
-            >
-              {errors.email?.message}
-            </p>
-          </div>
+          <InputField
+            type="email"
+            placeholder="Email Address"
+            icon={<Mail size={18} />}
+            error={errors.email?.message}
+            {...register("email")}
+          />
 
-          {/* Password */}
-          <div>
-            <div className="relative">
-              <Lock
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
-                size={18}
-              />
-              <input
-                {...register("password")}
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                className={`input-luxury pl-10 pr-10 ${
-                  errors.password ? "border-red-500/50" : ""
-                }`}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 transition-colors hover:text-[#D4AF37]"
-                aria-label="Toggle password visibility"
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-            <p
-              className={`mt-1 text-xs text-red-400 transition-all duration-200 ${
-                errors.password ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
-              } overflow-hidden`}
-            >
-              {errors.password?.message}
-            </p>
-
-            {/* Forgot */}
-            <div className="mt-2 flex justify-end">
-              <Link
-                to="/forgot-password"
-                className="text-xs font-medium text-zinc-500 transition-colors hover:text-amber-400"
-              >
-                Forgot password?
-              </Link>
-            </div>
-          </div>
+          <PasswordField
+            placeholder="Password"
+            error={errors.password?.message}
+            {...register("password")}
+          />
         </div>
 
-        {/* Submit */}
-        <button
-          type="submit"
-          disabled={loading || isSubmitting}
-          className="btn-primary w-full"
-        >
-          {loading || isSubmitting ? "Signing in..." : "Sign in"}
-        </button>
+        <FormSubmitButton
+          label="Sign in"
+          loadingLabel="Signing in..."
+          loading={loading}
+          submitting={isSubmitting}
+        />
 
-        {/* Error Message */}
-        <p
-          className={`text-center text-xs text-red-400 transition-all duration-200 ${
-            apiError ? "max-h-10 opacity-100" : "max-h-0 opacity-0"
-          } overflow-hidden`}
-        >
-          {apiError}
-        </p>
+        <FormErrorMessage
+          message={apiError}
+          align="center"
+          maxHeight="max-h-10"
+        />
 
-        {/* Divider */}
-        <div className="flex items-center gap-4">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
-          <span className="text-xs text-zinc-500">OR</span>
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
-        </div>
+        <Divider label="OR" />
 
-        <button
-          type="button"
-          className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/70 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:border-amber-400"
-        >
-          {/* liquid layer */}
-          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-amber-500/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-
-          {/* content */}
-          <FaGoogle className="text-zinc-400 transition-colors group-hover:text-white" />
-          <span className="relative z-10">Continue with Google</span>
-        </button>
+        <GoogleAuthButton />
       </form>
     </div>
   );

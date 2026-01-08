@@ -11,6 +11,7 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [otpStarted, setOtpStarted] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,8 +27,10 @@ export default function SignupPage() {
   }, [otpStarted]);
 
   useEffect(() => {
-    if (!role) navigate("/", { replace: true });
-  }, [role, navigate]);
+    if (!role && !submitted) {
+      navigate("/", { replace: true });
+    }
+  }, [role, submitted, navigate]);
 
   const {
     register,
@@ -36,11 +39,16 @@ export default function SignupPage() {
   } = useSignupForm(role);
 
   const onSubmit = async (data: SignupInput) => {
+    setSubmitted(true);
     const res = await signup(data);
+
     setOtpStarted(true);
     notify.success(res.message);
-    sessionStorage.removeItem("signupRole");
-    navigate("/verify-otp", { state: { email: res.data.email } });
+
+    navigate("/verify-otp", {
+      state: { email: res.data.email },
+      replace: true,
+    });
   };
 
   return (

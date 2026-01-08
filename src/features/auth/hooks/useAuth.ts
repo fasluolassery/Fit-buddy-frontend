@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   loginRequest,
+  logoutRequest,
   resendOtpRequest,
   signupRequest,
   verifyOtpRequest,
@@ -13,7 +14,7 @@ import type {
 } from "../validation";
 import type { ApiErrorResponse } from "../../../shared/types/api";
 import { useAppDispatch } from "../../../shared/hooks/redux";
-import { authSuccess } from "../auth.slice";
+import { authSuccess, logout as logoutAction } from "../auth.slice";
 import { ERROR_MESSAGES } from "../../../shared/constants/error-messages";
 
 function getErrorMessage(err: unknown): string {
@@ -52,6 +53,7 @@ export function useAuth() {
     handleRequest(async () => {
       const res = await loginRequest(data);
       const { user, accessToken } = res.data;
+      const { role } = user;
 
       dispatch(
         authSuccess({
@@ -59,6 +61,17 @@ export function useAuth() {
           accessToken,
         }),
       );
+
+      return {
+        res,
+        role,
+      };
+    });
+
+  const logout = () =>
+    handleRequest(async () => {
+      const res = await logoutRequest();
+      dispatch(logoutAction());
 
       return res;
     });
@@ -68,6 +81,7 @@ export function useAuth() {
     verifyOtp,
     resendOtp,
     login,
+    logout,
     loading,
     apiError,
   };

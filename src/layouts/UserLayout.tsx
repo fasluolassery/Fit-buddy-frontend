@@ -16,6 +16,8 @@ import {
   Flame,
 } from "lucide-react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../features/auth/hooks/useAuth";
+import { notify } from "../lib/notify";
 
 export default function UserLayout() {
   const navigate = useNavigate();
@@ -23,6 +25,8 @@ export default function UserLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navbarProfileOpen, setNavbarProfileOpen] = useState(false);
   const [sidebarProfileOpen, setSidebarProfileOpen] = useState(false);
+
+  const { logout } = useAuth();
 
   const navigation = [
     {
@@ -65,6 +69,12 @@ export default function UserLayout() {
   };
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = async () => {
+    const res = await logout();
+    notify.success(res.message);
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="relative min-h-screen bg-[#050505] text-zinc-300 selection:bg-[#D4AF37] selection:text-black">
@@ -180,7 +190,7 @@ export default function UserLayout() {
                   </button>
                   <div className="my-1 h-px bg-white/10" />
                   <button
-                    onClick={() => navigate("/login")}
+                    onClick={handleLogout}
                     className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-400 transition-colors hover:bg-red-500/10"
                   >
                     <LogOut size={16} />

@@ -6,7 +6,7 @@ import { notify } from "../../../lib/notify";
 import { Mail, RefreshCw, Shield } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 
-const OTP_EXPIRY_SECONDS = 10;
+const OTP_EXPIRY_SECONDS = 120;
 
 const getInitialTimeLeft = () => {
   const stored = localStorage.getItem("otpRequestedAt");
@@ -50,6 +50,7 @@ export default function VerifyOtpPage() {
   const onSubmit = async (data: VerifyOtpInput) => {
     const res = await verifyOtp(data);
     localStorage.removeItem("otpRequestedAt");
+    sessionStorage.removeItem("signupRole");
     notify.success(res.message);
     navigate("/login", { replace: true });
   };

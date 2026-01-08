@@ -8,7 +8,9 @@ export default function RequireGuest() {
 
   if (user) {
     return user.role === "admin" ? (
-      <Navigate to="/admin" replace />
+      <Navigate to="/admin/dashboard" replace />
+    ) : user.role === "trainer" ? (
+      <Navigate to="/trainer/dashboard" replace />
     ) : (
       <Navigate to="/dashboard" replace />
     );

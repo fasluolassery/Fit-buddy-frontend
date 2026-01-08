@@ -6,6 +6,7 @@ import { FaGoogle } from "react-icons/fa";
 import { useLoginForm } from "../hooks/useLoginForm";
 import { notify } from "../../../lib/notify";
 import { useAuth } from "../hooks/useAuth";
+import { getHomeRoute } from "../../../shared/utils/auth.utils";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,9 +21,9 @@ export default function LoginPage() {
   } = useLoginForm();
 
   const onSubmit = async (data: LoginInput) => {
-    const res = await login(data);
+    const { res, role } = await login(data);
     notify.success(res.message);
-    navigate("/dashboard");
+    navigate(getHomeRoute(role), { replace: true });
   };
 
   return (

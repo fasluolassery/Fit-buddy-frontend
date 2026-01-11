@@ -5,7 +5,7 @@ export default function Hero() {
   const navigate = useNavigate();
 
   const handleSelectRole = (role: "user" | "trainer") => {
-    sessionStorage.setItem("preferredRole", role);
+    sessionStorage.setItem("authRole", role);
     navigate("/login");
   };
 

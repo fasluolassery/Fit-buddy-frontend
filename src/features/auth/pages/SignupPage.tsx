@@ -1,5 +1,5 @@
 import { type SignupInput } from "../validation";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Mail, Phone, User2 } from "lucide-react";
 import { useSignupForm } from "../hooks/useSignupForm";
@@ -15,10 +15,9 @@ import { GoogleAuthButton } from "../components/GoogleAuthButton";
 export default function SignupPage() {
   const [otpStarted, setOtpStarted] = useState(false);
   const navigate = useNavigate();
-  const { signup, loading, apiError } = useAuth();
 
-  const role =
-    (sessionStorage.getItem("preferredRole") as "user" | "trainer") ?? "user";
+  const { role } = useOutletContext<{ role: "user" | "trainer" }>();
+  const { signup, loading, apiError } = useAuth();
 
   useEffect(() => {
     if (!otpStarted) return;

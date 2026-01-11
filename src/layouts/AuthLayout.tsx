@@ -14,7 +14,7 @@ export default function AuthLayout() {
   });
 
   useEffect(() => {
-    sessionStorage.setItem("authrole", role);
+    sessionStorage.setItem("authRole", role);
   }, [role]);
 
   const isAuthPage = ["/login", "/signup"].includes(location.pathname);
@@ -99,7 +99,7 @@ export default function AuthLayout() {
             )}
 
             <div className="flex flex-1 flex-col justify-start">
-              <Outlet />
+              <Outlet context={{ role }} />
             </div>
           </div>
         </div>

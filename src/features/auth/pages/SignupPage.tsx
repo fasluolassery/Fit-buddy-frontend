@@ -1,5 +1,5 @@
 import { type SignupInput } from "../validation";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Mail, Phone, User2 } from "lucide-react";
 import { useSignupForm } from "../hooks/useSignupForm";
@@ -14,26 +14,16 @@ import { GoogleAuthButton } from "../components/GoogleAuthButton";
 
 export default function SignupPage() {
   const [otpStarted, setOtpStarted] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
   const navigate = useNavigate();
-  const location = useLocation();
   const { signup, loading, apiError } = useAuth();
 
   const role =
-    location.state?.role ||
-    (sessionStorage.getItem("signupRole") as "user" | "trainer" | null);
+    (sessionStorage.getItem("preferredRole") as "user" | "trainer") ?? "user";
 
   useEffect(() => {
     if (!otpStarted) return;
     localStorage.setItem("otpRequestedAt", Date.now().toString());
   }, [otpStarted]);
-
-  useEffect(() => {
-    if (!role && !submitted) {
-      navigate("/", { replace: true });
-    }
-  }, [role, submitted, navigate]);
 
   const {
     register,
@@ -42,7 +32,6 @@ export default function SignupPage() {
   } = useSignupForm(role);
 
   const onSubmit = async (data: SignupInput) => {
-    setSubmitted(true);
     const res = await signup(data);
 
     setOtpStarted(true);

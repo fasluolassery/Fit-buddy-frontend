@@ -1,10 +1,21 @@
-import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import { Crown } from "lucide-react";
 import FluidBackground from "../shared/components/ui/FluidBackground";
+import { useEffect, useState } from "react";
+
+type AuthRole = "user" | "trainer";
 
 export default function AuthLayout() {
   const location = useLocation();
-  const navigate = useNavigate();
+
+  const [role, setRole] = useState<AuthRole>(() => {
+    const stored = sessionStorage.getItem("authRole");
+    return stored === "trainer" ? "trainer" : "user";
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem("authrole", role);
+  }, [role]);
 
   const isAuthPage = ["/login", "/signup"].includes(location.pathname);
 
@@ -66,24 +77,22 @@ export default function AuthLayout() {
                   <div
                     className="absolute h-[calc(100%-12px)] rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
                     style={{
-                      left: location.pathname.includes("signup")
-                        ? "calc(50% + 3px)"
-                        : "6px",
+                      left: role === "trainer" ? "calc(50% + 3px)" : "6px",
                       width: "calc(50% - 9px)",
                     }}
                   />
 
                   <button
-                    onClick={() => navigate("/login", { replace: true })}
-                    className={`relative z-10 flex-1 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${!location.pathname.includes("signup") ? "text-[#D4AF37]" : "text-zinc-500 hover:text-white"}`}
+                    onClick={() => setRole("user")}
+                    className={`relative z-10 flex-1 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${role === "user" ? "text-[#D4AF37]" : "text-zinc-500 hover:text-white"}`}
                   >
-                    Sign In
+                    Member
                   </button>
                   <button
-                    onClick={() => navigate("/signup", { replace: true })}
-                    className={`relative z-10 flex-1 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${location.pathname.includes("signup") ? "text-[#D4AF37]" : "text-zinc-500 hover:text-white"}`}
+                    onClick={() => setRole("trainer")}
+                    className={`relative z-10 flex-1 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${role === "trainer" ? "text-[#D4AF37]" : "text-zinc-500 hover:text-white"}`}
                   >
-                    Sign Up
+                    Trainer
                   </button>
                 </div>
               </div>

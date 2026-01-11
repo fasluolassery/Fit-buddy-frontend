@@ -1,10 +1,14 @@
 import { Award, Calendar, Dumbbell, Target, TrendingUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-export default function Hero({
-  selectRole,
-}: {
-  selectRole: (role: "user" | "trainer") => void;
-}) {
+export default function Hero() {
+  const navigate = useNavigate();
+
+  const handleSelectRole = (role: "user" | "trainer") => {
+    sessionStorage.setItem("preferredRole", role);
+    navigate("/login");
+  };
+
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden px-6 pb-20 pt-32">
       {/* Animated Background Gradients */}
@@ -40,7 +44,7 @@ export default function Hero({
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <button
-                  onClick={() => selectRole("user")}
+                  onClick={() => handleSelectRole("user")}
                   className="group relative overflow-hidden rounded-2xl border border-zinc-700 bg-gradient-to-br from-zinc-800 to-zinc-900 p-6 transition-all duration-300 hover:border-amber-800 hover:from-amber-950 hover:to-zinc-900"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-600/0 to-amber-600/0 transition-all duration-300 group-hover:from-amber-600/10 group-hover:to-transparent"></div>
@@ -55,7 +59,7 @@ export default function Hero({
                   </div>
                 </button>
                 <button
-                  onClick={() => selectRole("trainer")}
+                  onClick={() => handleSelectRole("trainer")}
                   className="group relative overflow-hidden rounded-2xl border border-zinc-700 bg-gradient-to-br from-zinc-800 to-zinc-900 p-6 transition-all duration-300 hover:border-amber-800 hover:from-amber-950 hover:to-zinc-900"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-600/0 to-amber-600/0 transition-all duration-300 group-hover:from-amber-600/10 group-hover:to-transparent"></div>

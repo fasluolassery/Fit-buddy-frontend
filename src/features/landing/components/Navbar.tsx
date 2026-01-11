@@ -1,8 +1,8 @@
-export default function Navbar({
-  selectRole,
-}: {
-  selectRole: (role: "user" | "trainer") => void;
-}) {
+import { useNavigate } from "react-router-dom";
+
+export default function Navbar() {
+  const navigate = useNavigate();
+
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-[95%] max-w-6xl -translate-x-1/2">
       <div className="rounded-3xl border border-white/10 bg-zinc-900/40 px-8 py-4 shadow-2xl shadow-black/50 backdrop-blur-2xl">
@@ -67,7 +67,7 @@ export default function Navbar({
                 Sign In
               </button> */}
             <button
-              onClick={() => selectRole("user")}
+              onClick={() => navigate("/login")}
               className="rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-2.5 text-sm font-semibold text-black shadow-lg shadow-amber-900/50 transition-all duration-300 hover:from-amber-400 hover:to-amber-500"
             >
               Get Started

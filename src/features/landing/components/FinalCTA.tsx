@@ -1,8 +1,8 @@
-export default function FinalCTA({
-  selectRole,
-}: {
-  selectRole: (role: "user" | "trainer") => void;
-}) {
+import { useNavigate } from "react-router-dom";
+
+export default function FinalCTA() {
+  const navigate = useNavigate();
+
   return (
     <section id="trainers" className="relative px-6 py-32">
       <div className="mx-auto max-w-4xl">
@@ -18,7 +18,7 @@ export default function FinalCTA({
               personalized templates today.
             </p>
             <button
-              onClick={() => selectRole("user")}
+              onClick={() => navigate("/login")}
               className="rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-12 py-5 text-lg font-bold text-black shadow-2xl shadow-amber-900/50 transition-all duration-300 hover:from-amber-400 hover:to-amber-500"
             >
               Start Your Journey

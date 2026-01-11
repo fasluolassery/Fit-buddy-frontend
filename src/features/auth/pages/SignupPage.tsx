@@ -11,6 +11,7 @@ import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButt
 import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
 import { Divider } from "../../../shared/components/ui/Divider";
 import { GoogleAuthButton } from "../components/GoogleAuthButton";
+import { AuthSwitchLink } from "../components/AuthSwitchLink";
 
 export default function SignupPage() {
   const [otpStarted, setOtpStarted] = useState(false);
@@ -101,6 +102,12 @@ export default function SignupPage() {
 
         <GoogleAuthButton />
       </form>
+
+      <AuthSwitchLink
+        text="Already have an account?"
+        linkText="Sign in"
+        to="/login"
+      />
     </div>
   );
 }

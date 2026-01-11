@@ -11,6 +11,7 @@ import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButt
 import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
 import { Divider } from "../../../shared/components/ui/Divider";
 import { GoogleAuthButton } from "../components/GoogleAuthButton";
+import { AuthSwitchLink } from "../components/AuthSwitchLink";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -64,6 +65,12 @@ export default function LoginPage() {
 
         <GoogleAuthButton />
       </form>
+
+      <AuthSwitchLink
+        text="Don’t have an account?"
+        linkText="Sign up"
+        to="/signup"
+      />
     </div>
   );
 }

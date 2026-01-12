@@ -31,14 +31,7 @@ export function InputField({
         />
       </div>
 
-      {/* <p
-        className={`mt-1 overflow-hidden text-xs text-red-400 transition-all duration-200 ${
-          error ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        {error}
-      </p> */}
-      <FormErrorMessage message={error} />
+      <FormErrorMessage message={error} maxHeight="max-h-10" />
     </div>
   );
 }

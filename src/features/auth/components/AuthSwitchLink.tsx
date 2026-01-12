@@ -8,7 +8,7 @@ type AuthSwitchLinkProps = {
 
 export function AuthSwitchLink({ text, linkText, to }: AuthSwitchLinkProps) {
   return (
-    <div className="border-t border-white/5 pt-2">
+    <div className="border-t border-white/5 pt-3">
       <p className="text-center text-sm text-zinc-400">
         {text}{" "}
         <Link

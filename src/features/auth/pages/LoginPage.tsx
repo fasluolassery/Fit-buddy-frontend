@@ -1,17 +1,17 @@
-import { type LoginInput } from "../validation";
-import { useNavigate } from "react-router-dom";
 import { Mail } from "lucide-react";
-import { useLoginForm } from "../hooks/useLoginForm";
+import { useNavigate } from "react-router-dom";
 import { notify } from "../../../lib/notify";
-import { useAuth } from "../hooks/useAuth";
-import { getHomeRoute } from "../../../shared/utils/auth.utils";
+import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
+import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButton";
 import { InputField } from "../../../shared/components/form/InputField";
 import { PasswordField } from "../../../shared/components/form/PasswordField";
-import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButton";
-import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
 import { Divider } from "../../../shared/components/ui/Divider";
-import { GoogleAuthButton } from "../components/GoogleAuthButton";
+import { getHomeRoute } from "../../../shared/utils/auth.utils";
 import { AuthSwitchLink } from "../components/AuthSwitchLink";
+import { GoogleAuthButton } from "../components/GoogleAuthButton";
+import { useAuth } from "../hooks/useAuth";
+import { useLoginForm } from "../hooks/useLoginForm";
+import { type LoginInput } from "../validation";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -30,23 +30,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-sm space-y-4">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-4">
-          <InputField
-            type="email"
-            placeholder="Email Address"
-            icon={<Mail size={18} />}
-            error={errors.email?.message}
-            {...register("email")}
-          />
+    <div className="mx-auto w-full max-w-sm space-y-6">
+      <div className="space-y-3 text-center">
+        <h1 className="text-3xl font-black tracking-tight text-white">
+          Welcome <span className="text-amber-300/90">Back</span>
+        </h1>
 
-          <PasswordField
-            placeholder="Password"
-            error={errors.password?.message}
-            {...register("password")}
-          />
-        </div>
+        <p className="text-sm leading-relaxed text-zinc-400">
+          Sign in to continue your journey with FitBuddy
+        </p>
+      </div>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <InputField
+          type="email"
+          placeholder="Email Address"
+          icon={<Mail size={18} />}
+          error={errors.email?.message}
+          {...register("email")}
+        />
+
+        <PasswordField
+          placeholder="Password"
+          error={errors.password?.message}
+          {...register("password")}
+        />
 
         <FormSubmitButton
           label="Sign in"

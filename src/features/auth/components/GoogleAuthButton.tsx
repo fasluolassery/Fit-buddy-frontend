@@ -9,7 +9,7 @@ export function GoogleAuthButton({ onClick }: Props) {
     <button
       type="button"
       onClick={onClick}
-      className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/70 py-2.5 text-sm font-medium text-white transition-colors duration-300 hover:border-amber-400"
+      className="group relative flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/70 text-sm font-medium text-white transition-colors duration-300 hover:border-amber-300/40"
     >
       {/* liquid layer */}
       <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-amber-500/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />

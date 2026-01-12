@@ -54,15 +54,15 @@
   }
 
   .input-luxury {
-    @apply w-full max-w-full rounded-xl border border-white/5 bg-white/5 px-4 py-2.5 text-sm text-white transition-all duration-300 placeholder:text-zinc-500 focus:border-[#D4AF37]/50 focus:bg-white/10 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]/50;
+    @apply h-11 w-full rounded-xl border border-white/5 bg-white/5 px-4 text-sm text-white transition-all duration-300 placeholder:text-zinc-500 focus:border-[#D4AF37]/50 focus:bg-white/10 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]/50;
   }
 
   .btn-primary {
-    @apply relative overflow-hidden rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#AA8B2E] px-6 py-2.5 text-sm font-bold text-black transition-all duration-300 hover:opacity-90 active:scale-[0.98];
+    @apply relative h-11 overflow-hidden rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#AA8B2E] px-6 text-sm font-bold text-black transition-all duration-300 hover:opacity-90 active:scale-[0.98];
   }
 
   .btn-outline {
-    @apply rounded-xl border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-6 py-3 font-semibold text-[#D4AF37] transition-all duration-300 hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/10 active:scale-[0.98];
+    @apply h-11 rounded-xl border border-[#D4AF37]/20 bg-[#D4AF37]/5 px-6 font-semibold text-[#D4AF37] transition-all duration-300 hover:border-[#D4AF37]/40 hover:bg-[#D4AF37]/10 active:scale-[0.98];
   }
 
   /* Custom Premium Scrollbar */

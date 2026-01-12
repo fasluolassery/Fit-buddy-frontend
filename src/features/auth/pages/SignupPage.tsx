@@ -45,9 +45,18 @@ export default function SignupPage() {
 
   return (
     <div className="mx-auto w-full max-w-sm space-y-4">
+      <div className="space-y-3 text-center">
+        <h1 className="text-3xl font-black tracking-tight text-white">
+          Create your <span className="text-amber-300/90">account</span>
+        </h1>
+        <p className="text-sm leading-relaxed text-zinc-400">
+          Join FitBuddy and start your journey
+        </p>
+      </div>
+
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-        <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-3">
           <InputField
             type="text"
             placeholder="Full Name"
@@ -57,33 +66,33 @@ export default function SignupPage() {
           />
 
           <InputField
-            type="email"
-            placeholder="Email Address"
-            icon={<Mail size={18} />}
-            error={errors.email?.message}
-            {...register("email")}
-          />
-
-          <InputField
             type="tel"
             placeholder="Phone Number"
             icon={<Phone size={18} />}
             error={errors.phone?.message}
             {...register("phone")}
           />
-
-          <PasswordField
-            placeholder="Password"
-            error={errors.password?.message}
-            {...register("password")}
-          />
-
-          <PasswordField
-            placeholder="Confirm Password"
-            error={errors.confirmPassword?.message}
-            {...register("confirmPassword")}
-          />
         </div>
+
+        <InputField
+          type="email"
+          placeholder="Email Address"
+          icon={<Mail size={18} />}
+          error={errors.email?.message}
+          {...register("email")}
+        />
+
+        <PasswordField
+          placeholder="Password"
+          error={errors.password?.message}
+          {...register("password")}
+        />
+
+        <PasswordField
+          placeholder="Confirm Password"
+          error={errors.confirmPassword?.message}
+          {...register("confirmPassword")}
+        />
 
         <FormSubmitButton
           label="Sign up"

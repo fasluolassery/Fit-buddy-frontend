@@ -2,6 +2,8 @@ import { Mail, RefreshCw, Shield } from "lucide-react";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { notify } from "../../../lib/notify";
+import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
+import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButton";
 import { useAuth } from "../hooks/useAuth";
 import { useVerifyOtpForm } from "../hooks/useVerifyForm";
 import { type VerifyOtpInput } from "../validation";
@@ -53,7 +55,7 @@ export default function VerifyOtpPage() {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useVerifyOtpForm(email);
 
   const onSubmit = async (data: VerifyOtpInput) => {
@@ -138,13 +140,11 @@ export default function VerifyOtpPage() {
         </div>
 
         {/* Error */}
-        <p
-          className={`mt-1 text-center text-xs text-red-400 transition-all duration-200 ${
-            errors.otp || apiError ? "max-h-5 opacity-100" : "max-h-0 opacity-0"
-          } overflow-hidden`}
-        >
-          {errors.otp?.message || apiError}
-        </p>
+        <FormErrorMessage
+          message={errors.otp?.message || apiError}
+          align="center"
+          maxHeight="max-h-10"
+        />
 
         {/* Resend */}
         <div className="mt-2 text-center">
@@ -173,13 +173,13 @@ export default function VerifyOtpPage() {
 
         {/* Submit */}
         <div className="flex justify-center">
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-primary w-full max-w-96 py-3"
-          >
-            {loading ? "Verifying..." : "Verify code"}
-          </button>
+          <FormSubmitButton
+            label="Verify code"
+            loadingLabel="Verifying..."
+            loading={loading}
+            submitting={isSubmitting}
+            className="max-w-96"
+          />
         </div>
 
         {/* Info box under resend */}

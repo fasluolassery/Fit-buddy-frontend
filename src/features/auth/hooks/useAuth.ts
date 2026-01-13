@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { ERROR_MESSAGES } from "../../../shared/constants/error-messages";
+import { useAppDispatch } from "../../../shared/hooks/redux";
+import type { ApiErrorResponse } from "../../../shared/types/api";
 import {
   loginRequest,
   logoutRequest,
@@ -6,16 +9,13 @@ import {
   signupRequest,
   verifyOtpRequest,
 } from "../auth.services";
+import { authSuccess, logout as logoutAction } from "../auth.slice";
 import type {
   LoginInput,
   ResendOtpInput,
   SignupInput,
   VerifyOtpInput,
 } from "../validation";
-import type { ApiErrorResponse } from "../../../shared/types/api";
-import { useAppDispatch } from "../../../shared/hooks/redux";
-import { authSuccess, logout as logoutAction } from "../auth.slice";
-import { ERROR_MESSAGES } from "../../../shared/constants/error-messages";
 
 function getErrorMessage(err: unknown): string {
   const apiError = err as ApiErrorResponse;
@@ -68,6 +68,15 @@ export function useAuth() {
       };
     });
 
+  const startEmailVerification = (data: ResendOtpInput) =>
+    handleRequest(async () => {
+      const { email } = data;
+      const res = await resendOtp(data);
+      sessionStorage.setItem("authMail", email);
+
+      return res;
+    });
+
   const logout = () =>
     handleRequest(async () => {
       const res = await logoutRequest();
@@ -81,6 +90,7 @@ export function useAuth() {
     verifyOtp,
     resendOtp,
     login,
+    startEmailVerification,
     logout,
     loading,
     apiError,

@@ -26,7 +26,7 @@ export default function VerifyOtpPage() {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    const raw = sessionStorage.getItem("signup_otp");
+    const raw = sessionStorage.getItem("authMail");
 
     if (!raw) {
       navigate("/signup", { replace: true });
@@ -46,8 +46,8 @@ export default function VerifyOtpPage() {
 
   const { verifyOtp, resendOtp, loading, apiError } = useAuth();
 
-  const signupData = sessionStorage.getItem("signup_otp");
-  const email: string = signupData ? JSON.parse(signupData).email : "";
+  const signupData = sessionStorage.getItem("authMail");
+  const email: string = signupData ? signupData : "";
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -60,7 +60,7 @@ export default function VerifyOtpPage() {
 
   const onSubmit = async (data: VerifyOtpInput) => {
     const res = await verifyOtp(data);
-    sessionStorage.removeItem("signup_otp");
+    sessionStorage.removeItem("authMail");
     sessionStorage.removeItem("authRole");
     localStorage.removeItem("otpRequestedAt");
     notify.success(res.message);

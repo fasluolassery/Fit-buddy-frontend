@@ -12,16 +12,10 @@ import { useAuth } from "../hooks/useAuth";
 import { useSignupForm } from "../hooks/useSignupForm";
 import { type SignupInput } from "../validation";
 
-function startSignupOtp(email: string, role: "user" | "trainer") {
+function startSignupOtp(email: string) {
   const now = Date.now();
   localStorage.setItem("otpRequestedAt", now.toString());
-
-  const otpPayload = {
-    email,
-    role,
-    requestedAt: new Date(now).toISOString(),
-  };
-  sessionStorage.setItem("signup_otp", JSON.stringify(otpPayload));
+  sessionStorage.setItem("authMail", email);
 }
 
 export default function SignupPage() {
@@ -40,7 +34,7 @@ export default function SignupPage() {
     const res = await signup(data);
     const { email } = res.data;
 
-    startSignupOtp(email, role);
+    startSignupOtp(email);
 
     notify.success(res.message);
     navigate("/verify-otp", { replace: true });

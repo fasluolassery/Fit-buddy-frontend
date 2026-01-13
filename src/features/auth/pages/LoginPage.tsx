@@ -6,6 +6,8 @@ import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButt
 import { InputField } from "../../../shared/components/form/InputField";
 import { PasswordField } from "../../../shared/components/form/PasswordField";
 import { Divider } from "../../../shared/components/ui/Divider";
+import { ERROR_CODES } from "../../../shared/constants/error-messages";
+import type { ApiErrorResponse } from "../../../shared/types/api";
 import { getHomeRoute } from "../../../shared/utils/auth.utils";
 import { AuthSwitchLink } from "../components/AuthSwitchLink";
 import { GoogleAuthButton } from "../components/GoogleAuthButton";
@@ -15,7 +17,7 @@ import { type LoginInput } from "../validation";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login, loading, apiError } = useAuth();
+  const { login, startEmailVerification, loading, apiError } = useAuth();
 
   const {
     register,
@@ -24,9 +26,32 @@ export default function LoginPage() {
   } = useLoginForm();
 
   const onSubmit = async (data: LoginInput) => {
-    const { res, role } = await login(data);
-    notify.success(res.message);
-    navigate(getHomeRoute(role), { replace: true });
+    try {
+      const { res, role } = await login(data);
+
+      notify.success(res.message);
+      navigate(getHomeRoute(role), { replace: true });
+    } catch (err) {
+      const apiErr = err as ApiErrorResponse;
+
+      const {
+        error: { code, message },
+        success,
+      } = apiErr;
+
+      if (code === ERROR_CODES.EMAIL_NOT_VERIFIED || !success) {
+        notify.verifyEmail(message, async () => {
+          const { email } = data;
+          const res = await startEmailVerification({ email });
+
+          const { message } = res;
+          notify.success(message);
+          navigate("/verify-otp", { replace: true });
+        });
+        return;
+      }
+      throw err;
+    }
   };
 
   return (

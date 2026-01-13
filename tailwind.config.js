@@ -2,9 +2,11 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      transitionTimingFunction: {
+        luxury: "cubic-bezier(0.34,1.56,0.64,1)",
+      },
+    },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-  ],
+  plugins: [require("tailwindcss-animate")],
 };

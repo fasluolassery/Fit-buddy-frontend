@@ -1,16 +1,16 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { type VerifyOtpInput } from "../validation";
-import { useVerifyOtpForm } from "../hooks/useVerifyForm";
-import { notify } from "../../../lib/notify";
 import { Mail, RefreshCw, Shield } from "lucide-react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { notify } from "../../../lib/notify";
 import { useAuth } from "../hooks/useAuth";
+import { useVerifyOtpForm } from "../hooks/useVerifyForm";
+import { type VerifyOtpInput } from "../validation";
 
 const OTP_EXPIRY_SECONDS = 120;
 
 const getInitialTimeLeft = () => {
   const stored = localStorage.getItem("otpRequestedAt");
-  if (!stored) return 0;
+  if (!stored) return OTP_EXPIRY_SECONDS;
 
   const elapsedSeconds = Math.floor((Date.now() - Number(stored)) / 1000);
 
@@ -19,10 +19,18 @@ const getInitialTimeLeft = () => {
 
 export default function VerifyOtpPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [timeLeft, setTimeLeft] = useState(getInitialTimeLeft);
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
+
+  useEffect(() => {
+    const raw = sessionStorage.getItem("signup_otp");
+
+    if (!raw) {
+      navigate("/signup", { replace: true });
+      return;
+    }
+  }, [navigate]);
 
   useEffect(() => {
     if (timeLeft <= 0) return;
@@ -36,7 +44,8 @@ export default function VerifyOtpPage() {
 
   const { verifyOtp, resendOtp, loading, apiError } = useAuth();
 
-  const email: string = location.state?.email;
+  const signupData = sessionStorage.getItem("signup_otp");
+  const email: string = signupData ? JSON.parse(signupData).email : "";
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -49,8 +58,9 @@ export default function VerifyOtpPage() {
 
   const onSubmit = async (data: VerifyOtpInput) => {
     const res = await verifyOtp(data);
+    sessionStorage.removeItem("signup_otp");
+    sessionStorage.removeItem("authRole");
     localStorage.removeItem("otpRequestedAt");
-    sessionStorage.removeItem("signupRole");
     notify.success(res.message);
     navigate("/login", { replace: true });
   };

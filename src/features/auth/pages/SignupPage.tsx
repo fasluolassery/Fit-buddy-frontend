@@ -1,29 +1,34 @@
-import { type SignupInput } from "../validation";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { Mail, Phone, User2 } from "lucide-react";
-import { useSignupForm } from "../hooks/useSignupForm";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { notify } from "../../../lib/notify";
-import { useAuth } from "../hooks/useAuth";
+import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
+import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButton";
 import { InputField } from "../../../shared/components/form/InputField";
 import { PasswordField } from "../../../shared/components/form/PasswordField";
-import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButton";
-import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
 import { Divider } from "../../../shared/components/ui/Divider";
-import { GoogleAuthButton } from "../components/GoogleAuthButton";
 import { AuthSwitchLink } from "../components/AuthSwitchLink";
+import { GoogleAuthButton } from "../components/GoogleAuthButton";
+import { useAuth } from "../hooks/useAuth";
+import { useSignupForm } from "../hooks/useSignupForm";
+import { type SignupInput } from "../validation";
+
+function startSignupOtp(email: string, role: "user" | "trainer") {
+  const now = Date.now();
+  localStorage.setItem("otpRequestedAt", now.toString());
+
+  const otpPayload = {
+    email,
+    role,
+    requestedAt: new Date(now).toISOString(),
+  };
+  sessionStorage.setItem("signup_otp", JSON.stringify(otpPayload));
+}
 
 export default function SignupPage() {
-  const [otpStarted, setOtpStarted] = useState(false);
   const navigate = useNavigate();
 
   const { role } = useOutletContext<{ role: "user" | "trainer" }>();
   const { signup, loading, apiError } = useAuth();
-
-  useEffect(() => {
-    if (!otpStarted) return;
-    localStorage.setItem("otpRequestedAt", Date.now().toString());
-  }, [otpStarted]);
 
   const {
     register,
@@ -33,14 +38,12 @@ export default function SignupPage() {
 
   const onSubmit = async (data: SignupInput) => {
     const res = await signup(data);
+    const { email } = res.data;
 
-    setOtpStarted(true);
+    startSignupOtp(email, role);
+
     notify.success(res.message);
-
-    navigate("/verify-otp", {
-      state: { email: res.data.email },
-      replace: true,
-    });
+    navigate("/verify-otp", { replace: true });
   };
 
   return (

@@ -1,21 +1,21 @@
 import { Crown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import FluidBackground from "../shared/components/ui/FluidBackground";
 
 type AuthRole = "user" | "trainer";
 
-export default function DemoLayout() {
+export default function AuthLayout() {
   const location = useLocation();
 
-  const [role, setRole] = useState<AuthRole>(() => {
-    const stored = sessionStorage.getItem("authRole");
-    return stored === "trainer" ? "trainer" : "user";
-  });
+  const [role, setRole] = useState<AuthRole>(
+    () => (sessionStorage.getItem("authRole") as AuthRole) ?? "user",
+  );
 
-  useEffect(() => {
-    sessionStorage.setItem("authRole", role);
-  }, [role]);
+  const handleRoleChange = (newRole: AuthRole) => {
+    setRole(newRole);
+    sessionStorage.setItem("authRole", newRole);
+  };
 
   const isAuthPage = ["/signup"].includes(location.pathname);
 
@@ -56,7 +56,7 @@ export default function DemoLayout() {
                 <div className="relative mx-auto flex w-full max-w-[300px] items-center justify-between gap-1 overflow-hidden rounded-2xl border border-white/10 bg-black p-1.5 ring-1 ring-white/5 backdrop-blur-2xl">
                   {/* Glass Indicator - V1 Sidebar Style */}
                   <div
-                    className="ease-[cubic-bezier(0.34,1.56,0.64,1)] absolute h-[calc(100%-12px)] rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 backdrop-blur-md transition-all duration-500"
+                    className="absolute h-[calc(100%-12px)] rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 backdrop-blur-md transition-all duration-500 ease-luxury"
                     style={{
                       left: role === "trainer" ? "calc(50% + 3px)" : "6px",
                       width: "calc(50% - 9px)",
@@ -64,13 +64,13 @@ export default function DemoLayout() {
                   />
 
                   <button
-                    onClick={() => setRole("user")}
+                    onClick={() => handleRoleChange("user")}
                     className={`relative z-10 flex-1 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${role === "user" ? "text-[#D4AF37]" : "text-zinc-500 hover:text-white"}`}
                   >
                     Member
                   </button>
                   <button
-                    onClick={() => setRole("trainer")}
+                    onClick={() => handleRoleChange("trainer")}
                     className={`relative z-10 flex-1 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${role === "trainer" ? "text-[#D4AF37]" : "text-zinc-500 hover:text-white"}`}
                   >
                     Trainer

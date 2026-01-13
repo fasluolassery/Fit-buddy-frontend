@@ -53,7 +53,6 @@ export function useAuth() {
     handleRequest(async () => {
       const res = await loginRequest(data);
       const { user, accessToken } = res.data;
-      const { role } = user;
 
       dispatch(
         authSuccess({
@@ -62,10 +61,7 @@ export function useAuth() {
         }),
       );
 
-      return {
-        res,
-        role,
-      };
+      return res;
     });
 
   const startEmailVerification = (data: ResendOtpInput) =>

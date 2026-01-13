@@ -8,7 +8,6 @@ import { PasswordField } from "../../../shared/components/form/PasswordField";
 import { Divider } from "../../../shared/components/ui/Divider";
 import { ERROR_CODES } from "../../../shared/constants/error-messages";
 import type { ApiErrorResponse } from "../../../shared/types/api";
-import { getHomeRoute } from "../../../shared/utils/auth.utils";
 import { AuthSwitchLink } from "../components/AuthSwitchLink";
 import { GoogleAuthButton } from "../components/GoogleAuthButton";
 import { useAuth } from "../hooks/useAuth";
@@ -27,10 +26,10 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginInput) => {
     try {
-      const { res, role } = await login(data);
+      const res = await login(data);
 
       notify.success(res.message);
-      navigate(getHomeRoute(role), { replace: true });
+      navigate("/redirect", { replace: true });
     } catch (err) {
       const apiErr = err as ApiErrorResponse;
 

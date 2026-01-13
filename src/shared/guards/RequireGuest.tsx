@@ -6,15 +6,7 @@ export default function RequireGuest() {
 
   if (isLoading) return <div>Loading....</div>;
 
-  if (user) {
-    return user.role === "admin" ? (
-      <Navigate to="/admin/dashboard" replace />
-    ) : user.role === "trainer" ? (
-      <Navigate to="/trainer/dashboard" replace />
-    ) : (
-      <Navigate to="/dashboard" replace />
-    );
-  }
+  if (user) return <Navigate to="/redirect" replace />;
 
   return <Outlet />;
 }

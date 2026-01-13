@@ -36,10 +36,9 @@ export default function LoginPage() {
 
       const {
         error: { code, message },
-        success,
       } = apiErr;
 
-      if (code === ERROR_CODES.EMAIL_NOT_VERIFIED || !success) {
+      if (code === ERROR_CODES.EMAIL_NOT_VERIFIED) {
         notify.verifyEmail(message, async () => {
           const { email } = data;
           const res = await startEmailVerification({ email });

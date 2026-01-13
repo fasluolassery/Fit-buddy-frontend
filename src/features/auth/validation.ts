@@ -20,7 +20,7 @@ export const signupSchema = z
     // .regex(/[a-z]/, "Password must contain at least one lowercase letter")
     // .regex(/[0-9]/, "Password must contain at least one number"),
     confirmPassword: z.string(),
-    role: z.enum(["user", "trainer", "admin"]),
+    role: z.enum(["user", "trainer", "admin"]).optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Password do not match",

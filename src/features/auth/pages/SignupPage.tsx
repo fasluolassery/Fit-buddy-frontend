@@ -28,10 +28,15 @@ export default function SignupPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useSignupForm(role);
+  } = useSignupForm();
 
   const onSubmit = async (data: SignupInput) => {
-    const res = await signup(data);
+    const payload = {
+      ...data,
+      role,
+    };
+
+    const res = await signup(payload);
     const { email } = res.data;
 
     startSignupOtp(email);

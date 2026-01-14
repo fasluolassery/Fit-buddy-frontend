@@ -7,6 +7,7 @@ import {
   loginRequest,
   logoutRequest,
   resendOtpRequest,
+  resetPasswordRequest,
   signupRequest,
   verifyOtpRequest,
 } from "../auth.services";
@@ -18,6 +19,7 @@ import type {
   SignupInput,
   VerifyOtpInput,
 } from "../validation";
+import type { ResetPasswordReqData } from "../types";
 
 function getErrorMessage(err: unknown): string {
   const apiError = err as ApiErrorResponse;
@@ -53,6 +55,9 @@ export function useAuth() {
 
   const forgotPassword = (data: ForgotPasswordInput) =>
     handleRequest(() => forgotPasswordRequest(data));
+
+  const resetPassword = (data: ResetPasswordReqData) =>
+    handleRequest(() => resetPasswordRequest(data));
 
   const login = (data: LoginInput) =>
     handleRequest(async () => {
@@ -93,6 +98,7 @@ export function useAuth() {
     login,
     startEmailVerification,
     forgotPassword,
+    resetPassword,
     logout,
     loading,
     apiError,

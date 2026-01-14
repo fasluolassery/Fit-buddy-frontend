@@ -40,12 +40,25 @@ export const forgotPasswordSchema = z.object({
   email: z.email("valid email address needed"),
 });
 
+export const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .max(64, "Password must not exceed 64 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password do not match",
+    path: ["confirmPassword"],
+  });
+
 export const loginSchema = z.object({
   email: z.string().trim().email("Enter a valid email address"),
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
-    .max(64, "Password must not exceed 64 characters"),
+    .max(64, "Passwords must not exceed 64 characters"),
 });
 
 export type SignupInput = z.infer<typeof signupSchema>;
@@ -53,3 +66,4 @@ export type VerifyOtpInput = z.infer<typeof verifyOtpSchema>;
 export type ResendOtpInput = z.infer<typeof resendOtpSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;

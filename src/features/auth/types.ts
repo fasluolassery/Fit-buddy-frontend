@@ -27,3 +27,8 @@ export interface MeResponseData {
   email: string;
   role: UserRole;
 }
+
+export interface ResetPasswordReqData {
+  token: string;
+  newPassword: string;
+}

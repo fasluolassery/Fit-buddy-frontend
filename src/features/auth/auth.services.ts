@@ -4,6 +4,7 @@ import type {
   LoginResponseData,
   MeResponseData,
   ResendOtpResponseData,
+  ResetPasswordReqData,
   SignupResponseData,
   VerifyOtpResponseData,
 } from "./types";
@@ -66,6 +67,14 @@ export const forgotPasswordRequest = (
 ): Promise<ApiResponse<null>> => {
   return api
     .post<ApiResponse<null>>("/auth/forgot-password", data)
+    .then(({ data }) => data);
+};
+
+export const resetPasswordRequest = (
+  data: ResetPasswordReqData,
+): Promise<ApiResponse<null>> => {
+  return api
+    .post<ApiResponse<null>>("/auth/reset-password", data)
     .then(({ data }) => data);
 };
 

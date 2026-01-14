@@ -1,13 +1,13 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
-import { type ApiErrorResponse } from "../shared/types/api";
 import { store } from "../app/store";
+import { setGlobalError } from "../app/store/global-error.slice";
 import { refreshTokenRequest } from "../features/auth/auth.services";
 import { logout, tokenRefreshed } from "../features/auth/auth.slice";
-import { setGlobalError } from "../shared/redux/global-error.slice";
 import {
   ERROR_CODES,
   ERROR_MESSAGES,
 } from "../shared/constants/error-messages";
+import { type ApiErrorResponse } from "../shared/types/api";
 
 const LOCAL_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const FORWARD_BASE_URL = import.meta.env.VITE_API_NGROK_BASE_URL;

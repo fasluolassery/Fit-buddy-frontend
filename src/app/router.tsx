@@ -10,11 +10,11 @@ import LandingPage from "../features/landing/pages/LandingPage";
 import AuthLayout from "../layouts/AuthLayout";
 import TrainerLayout from "../layouts/TrainerLayout";
 import UserLayout from "../layouts/UserLayout";
-import RequireAuth from "../shared/guards/RequireAuth";
-import RequireGuest from "../shared/guards/RequireGuest";
-import RequireRole from "../shared/guards/RequireRole";
-import Unauthorized from "../shared/pages/Unauthorized";
+import Unauthorized from "./pages/Unauthorized";
 import { RoleRedirect } from "../shared/utils/RoleRedirect.utils";
+import RequireGuest from "./guards/RequireGuest";
+import RequireAuth from "./guards/RequireAuth";
+import RequireRole from "./guards/RequireRole";
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },

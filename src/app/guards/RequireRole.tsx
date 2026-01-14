@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAppSelector } from "../hooks/redux";
-import type { UserRole } from "../types/roles";
+import { useAppSelector } from "../../shared/hooks/redux";
+import type { UserRole } from "../../shared/types/roles";
 
 type Props = {
   allowedRoles: UserRole[];

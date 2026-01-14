@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAppSelector } from "../hooks/redux";
+import { useAppSelector } from "../../shared/hooks/redux";
 
 export default function RequireAuth() {
   const { user, isLoading } = useAppSelector((s) => s.auth);

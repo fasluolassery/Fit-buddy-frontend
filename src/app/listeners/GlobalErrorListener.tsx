@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { clearGlobalError } from "../redux/global-error.slice";
 import { notify } from "../../lib/notify";
+import { useAppDispatch, useAppSelector } from "../../shared/hooks/redux";
+import { clearGlobalError } from "../store/global-error.slice";
 
 export function GlobalErrorListener() {
   const dispatch = useAppDispatch();

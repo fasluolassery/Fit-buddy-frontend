@@ -3,8 +3,8 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { Toaster } from "react-hot-toast";
 import { toasterOptions } from "../styles/toast.config";
-import { GlobalErrorListener } from "../shared/listeners/GlobalErrorListener";
 import { AuthInitializer } from "./AuthInitializer";
+import { GlobalErrorListener } from "./listeners/GlobalErrorListener";
 
 type Props = {
   children: ReactNode;

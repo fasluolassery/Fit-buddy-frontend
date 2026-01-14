@@ -1,5 +1,5 @@
 import { Mail } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { notify } from "../../../lib/notify";
 import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
 import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButton";
@@ -79,6 +79,16 @@ export default function LoginPage() {
           error={errors.password?.message}
           {...register("password")}
         />
+
+        {/* Forgot */}
+        <div className="mt-2 flex justify-end">
+          <Link
+            to="/forgot-password"
+            className="text-xs font-medium text-zinc-500 transition-colors hover:text-amber-400"
+          >
+            Forgot password?
+          </Link>
+        </div>
 
         <FormSubmitButton
           label="Sign in"

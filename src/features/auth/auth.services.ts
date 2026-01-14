@@ -8,6 +8,7 @@ import type {
   VerifyOtpResponseData,
 } from "./types";
 import type {
+  ForgotPasswordInput,
   LoginInput,
   ResendOtpInput,
   SignupInput,
@@ -57,6 +58,14 @@ export const refreshTokenRequest = (): Promise<
 > => {
   return refreshApi
     .post<ApiResponse<LoginResponseData>>("/auth/refresh")
+    .then(({ data }) => data);
+};
+
+export const forgotPasswordRequest = (
+  data: ForgotPasswordInput,
+): Promise<ApiResponse<null>> => {
+  return api
+    .post<ApiResponse<null>>("/auth/forgot-password", data)
     .then(({ data }) => data);
 };
 

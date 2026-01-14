@@ -3,6 +3,7 @@ import { ERROR_MESSAGES } from "../../../shared/constants/error-messages";
 import { useAppDispatch } from "../../../shared/hooks/redux";
 import type { ApiErrorResponse } from "../../../shared/types/api";
 import {
+  forgotPasswordRequest,
   loginRequest,
   logoutRequest,
   resendOtpRequest,
@@ -11,6 +12,7 @@ import {
 } from "../auth.services";
 import { authSuccess, logout as logoutAction } from "../auth.slice";
 import type {
+  ForgotPasswordInput,
   LoginInput,
   ResendOtpInput,
   SignupInput,
@@ -49,6 +51,9 @@ export function useAuth() {
   const resendOtp = (data: ResendOtpInput) =>
     handleRequest(() => resendOtpRequest(data));
 
+  const forgotPassword = (data: ForgotPasswordInput) =>
+    handleRequest(() => forgotPasswordRequest(data));
+
   const login = (data: LoginInput) =>
     handleRequest(async () => {
       const res = await loginRequest(data);
@@ -67,7 +72,7 @@ export function useAuth() {
   const startEmailVerification = (data: ResendOtpInput) =>
     handleRequest(async () => {
       const { email } = data;
-      const res = await resendOtp(data);
+      const res = await resendOtpRequest(data);
       sessionStorage.setItem("authMail", email);
 
       return res;
@@ -87,6 +92,7 @@ export function useAuth() {
     resendOtp,
     login,
     startEmailVerification,
+    forgotPassword,
     logout,
     loading,
     apiError,

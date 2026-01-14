@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { store } from "./store/config";
 import { Toaster } from "react-hot-toast";
 import { toasterOptions } from "../styles/toast.config";
 import { AuthInitializer } from "./AuthInitializer";

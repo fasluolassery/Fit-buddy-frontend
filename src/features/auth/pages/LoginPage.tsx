@@ -1,5 +1,6 @@
 import { Mail } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { notify } from "../../../lib/notify";
 import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
 import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButton";
@@ -7,6 +8,7 @@ import { InputField } from "../../../shared/components/form/InputField";
 import { PasswordField } from "../../../shared/components/form/PasswordField";
 import { Divider } from "../../../shared/components/ui/Divider";
 import { ERROR_CODES } from "../../../shared/constants/error-messages";
+import { AUTH_ROUTES } from "../../../shared/constants/routes";
 import type { ApiErrorResponse } from "../../../shared/types/api";
 import { AuthSwitchLink } from "../components/AuthSwitchLink";
 import { GoogleAuthButton } from "../components/GoogleAuthButton";
@@ -16,7 +18,24 @@ import { type LoginInput } from "../validation";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { login, startEmailVerification, loading, apiError } = useAuth();
+
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (!error) return;
+
+    const messages: Record<string, string> = {
+      ROLE_REQUIRED: "Please select a role before signing up.",
+      BAD_REQUEST: "Invalid request. Please try again.",
+      ACCOUNT_EXISTS: "Account exists. Use email & password login.",
+      UNAUTHORIZED: "No account found. Please sign up.",
+      GOOGLE_AUTH_FAILED: "Google authentication failed. Try again.",
+    };
+
+    notify.error(messages[error] ?? "Authentication failed");
+    navigate(".", { replace: true });
+  }, [searchParams, navigate]);
 
   const {
     register,
@@ -50,6 +69,10 @@ export default function LoginPage() {
       }
       throw err;
     }
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${AUTH_ROUTES.GOOGLE}?intent=login`;
   };
 
   return (
@@ -105,7 +128,7 @@ export default function LoginPage() {
 
         <Divider label="OR" />
 
-        <GoogleAuthButton />
+        <GoogleAuthButton onClick={handleGoogleLogin} />
       </form>
 
       <AuthSwitchLink

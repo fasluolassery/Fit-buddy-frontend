@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import AdminLoginpage from "../features/admin/auth/pages/AdminLoginpage";
 import ForgotPassword from "../features/auth/pages/ForgotPasswordPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
@@ -10,11 +11,11 @@ import LandingPage from "../features/landing/pages/LandingPage";
 import AuthLayout from "../layouts/AuthLayout";
 import TrainerLayout from "../layouts/TrainerLayout";
 import UserLayout from "../layouts/UserLayout";
-import Unauthorized from "./pages/Unauthorized";
 import { RoleRedirect } from "../shared/utils/RoleRedirect.utils";
-import RequireGuest from "./guards/RequireGuest";
 import RequireAuth from "./guards/RequireAuth";
+import RequireGuest from "./guards/RequireGuest";
 import RequireRole from "./guards/RequireRole";
+import Unauthorized from "./pages/Unauthorized";
 
 export const router = createBrowserRouter([
   { path: "/", element: <LandingPage /> },
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
           { path: "/reset-password", element: <ResetPasswordPage /> },
         ],
       },
+      { path: "/admin/login", element: <AdminLoginpage /> },
     ],
   },
   {

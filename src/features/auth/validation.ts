@@ -64,6 +64,9 @@ export const loginSchema = z.object({
 export type SignupInput = z.infer<typeof signupSchema>;
 export type VerifyOtpInput = z.infer<typeof verifyOtpSchema>;
 export type ResendOtpInput = z.infer<typeof resendOtpSchema>;
-export type LoginInput = z.infer<typeof loginSchema>;
+export type LoginIntent = "user" | "admin";
+export type LoginInput = z.infer<typeof loginSchema> & {
+  loginAs?: LoginIntent;
+};
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;

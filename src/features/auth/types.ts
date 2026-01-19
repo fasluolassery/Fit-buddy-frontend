@@ -13,19 +13,32 @@ export interface ResendOtpResponseData {
   email: string;
 }
 
-export interface LoginResponseData {
-  accessToken: string;
-  user: {
-    _id: string;
-    email: string;
-    role: UserRole;
-  };
-}
-
-export interface MeResponseData {
+export interface AuthUser {
   _id: string;
   email: string;
   role: UserRole;
+  name?: string;
+  profilePhoto?: string;
+  onboardingComplete: boolean;
+  isVerified: boolean;
+  isActive: boolean;
+  status?: "active" | "pending" | "rejected";
+  createdAt: Date;
+}
+
+export interface LoginResponseData {
+  user: AuthUser;
+  accessToken: string;
+}
+
+export interface RefreshResponseData {
+  accessToken: string;
+}
+
+export interface AuthState {
+  user: AuthUser | null;
+  accessToken: string | null;
+  isLoading: boolean;
 }
 
 export interface ResetPasswordReqData {

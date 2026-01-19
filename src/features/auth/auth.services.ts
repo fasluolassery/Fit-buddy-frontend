@@ -1,8 +1,9 @@
 import api, { refreshApi } from "../../lib/api";
 import type { ApiResponse } from "../../shared/types/api";
 import type {
+  AuthUser,
   LoginResponseData,
-  MeResponseData,
+  RefreshResponseData,
   ResendOtpResponseData,
   ResetPasswordReqData,
   SignupResponseData,
@@ -48,17 +49,15 @@ export const loginRequest = (
     .then(({ data }) => data);
 };
 
-export const getMeRequest = async (): Promise<ApiResponse<MeResponseData>> => {
-  return api
-    .get<ApiResponse<MeResponseData>>("/users/me")
-    .then(({ data }) => data);
+export const getMeRequest = async (): Promise<ApiResponse<AuthUser>> => {
+  return api.get<ApiResponse<AuthUser>>("/users/me").then(({ data }) => data);
 };
 
 export const refreshTokenRequest = (): Promise<
-  ApiResponse<LoginResponseData>
+  ApiResponse<RefreshResponseData>
 > => {
   return refreshApi
-    .post<ApiResponse<LoginResponseData>>("/auth/refresh")
+    .post<ApiResponse<RefreshResponseData>>("/auth/refresh")
     .then(({ data }) => data);
 };
 

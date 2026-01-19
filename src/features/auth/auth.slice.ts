@@ -1,22 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { UserRole } from "../../shared/types/roles";
-
-export interface AuthUser {
-  _id: string;
-  email: string;
-  role: UserRole;
-}
-
-interface AuthState {
-  user: AuthUser | null;
-  accessToken: string | null;
-  isLoading: boolean;
-}
-
-type AuthSuccessPayload = {
-  user: AuthUser;
-  accessToken: string;
-};
+import type {
+  AuthState,
+  AuthUser,
+  LoginResponseData,
+  RefreshResponseData,
+} from "./types";
 
 const initialState: AuthState = {
   user: null,
@@ -28,7 +16,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    authSuccess(state, action: PayloadAction<AuthSuccessPayload>) {
+    authSuccess(state, action: PayloadAction<LoginResponseData>) {
       const { user, accessToken } = action.payload;
       state.user = user;
       state.accessToken = accessToken;
@@ -39,7 +27,7 @@ const authSlice = createSlice({
       state.accessToken = null;
       state.isLoading = false;
     },
-    tokenRefreshed(state, action: PayloadAction<{ accessToken: string }>) {
+    tokenRefreshed(state, action: PayloadAction<RefreshResponseData>) {
       const { accessToken } = action.payload;
       state.accessToken = accessToken;
     },

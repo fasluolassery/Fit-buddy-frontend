@@ -11,7 +11,7 @@ import {
   TrendingDown,
 } from "lucide-react";
 
-export default function TrainerDashboardTwo() {
+export default function TrainerDashboard() {
   // Mock Data
   const stats = [
     {
@@ -91,35 +91,35 @@ export default function TrainerDashboardTwo() {
     },
   ];
 
-  const recentClients = [
-    {
-      name: "Vikram Singh",
-      plan: "Premium",
-      progress: 85,
-      sessionsLeft: 6,
-      lastSession: "2 days ago",
-      status: "active",
-      avatar: "VS",
-    },
-    {
-      name: "Ananya Das",
-      plan: "Standard",
-      progress: 62,
-      sessionsLeft: 2,
-      lastSession: "5 days ago",
-      status: "active",
-      avatar: "AD",
-    },
-    {
-      name: "Karthik Reddy",
-      plan: "Lite",
-      progress: 45,
-      sessionsLeft: 0,
-      lastSession: "1 week ago",
-      status: "expiring",
-      avatar: "KR",
-    },
-  ];
+  // const recentClients = [
+  //   {
+  //     name: "Vikram Singh",
+  //     plan: "Premium",
+  //     progress: 85,
+  //     sessionsLeft: 6,
+  //     lastSession: "2 days ago",
+  //     status: "active",
+  //     avatar: "VS",
+  //   },
+  //   {
+  //     name: "Ananya Das",
+  //     plan: "Standard",
+  //     progress: 62,
+  //     sessionsLeft: 2,
+  //     lastSession: "5 days ago",
+  //     status: "active",
+  //     avatar: "AD",
+  //   },
+  //   {
+  //     name: "Karthik Reddy",
+  //     plan: "Lite",
+  //     progress: 45,
+  //     sessionsLeft: 0,
+  //     lastSession: "1 week ago",
+  //     status: "expiring",
+  //     avatar: "KR",
+  //   },
+  // ];
 
   const pendingActions = [
     {
@@ -292,7 +292,7 @@ export default function TrainerDashboardTwo() {
         </div>
 
         {/* Recent Clients */}
-        <div className="rounded-[2rem] border border-zinc-900 bg-[#0c0c0c] p-8">
+        {/* <div className="rounded-[2rem] border border-zinc-900 bg-[#0c0c0c] p-8">
           <div className="mb-6 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-bold text-white">Recent Clients</h2>
@@ -357,7 +357,7 @@ export default function TrainerDashboardTwo() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

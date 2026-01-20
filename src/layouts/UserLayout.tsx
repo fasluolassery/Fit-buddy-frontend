@@ -1,21 +1,21 @@
-import { useState } from "react";
 import {
-  Home,
+  Bell,
+  ChevronDown,
   Dumbbell,
+  Flame,
+  Home,
+  LogOut,
+  Menu,
+  Search,
+  Settings,
   //   Users,
   //   Calendar,
   //   Award,
   User,
-  Settings,
-  LogOut,
-  Bell,
-  Search,
-  Menu,
   X,
-  ChevronDown,
-  Flame,
 } from "lucide-react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/hooks/useAuth";
 import { notify } from "../lib/notify";
 
@@ -106,7 +106,7 @@ export default function UserLayout() {
           <nav className="no-scrollbar relative flex-1 space-y-1 overflow-y-auto px-4 py-6">
             {/* Sliding Background Indicator */}
             <div
-              className="absolute inset-x-3 rounded-xl border border-[#D4AF37]/20 bg-[#D4AF37]/10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+              className="absolute inset-x-3 rounded-xl border border-[#D4AF37]/20 bg-[#D4AF37]/10 transition-all duration-500 ease-luxury"
               style={{
                 top: `${24 + navigation.findIndex((n) => isActive(n.path)) * 52 + 2}px`,
                 height: "48px",
@@ -178,7 +178,7 @@ export default function UserLayout() {
 
             {/* Sidebar Dropdown Card (V1 Style) - Now below the button */}
             {sidebarProfileOpen && (
-              <div className="animate-in fade-in slide-in-from-top-2 mt-2 rounded-xl border border-white/10 bg-zinc-900/60 p-2 backdrop-blur-xl duration-200">
+              <div className="mt-2 rounded-xl border border-white/10 bg-zinc-900/60 p-2 backdrop-blur-xl duration-200 animate-in fade-in slide-in-from-top-2">
                 <div className="space-y-1">
                   <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-300 transition-colors hover:bg-white/5 hover:text-white">
                     <User size={16} />
@@ -264,7 +264,7 @@ export default function UserLayout() {
 
               {/* Dropdown Card (Navbar Style) */}
               {navbarProfileOpen && (
-                <div className="animate-in fade-in zoom-in slide-in-from-top-4 absolute right-0 top-full mt-4 w-72 rounded-[2rem] border border-[#D4AF37]/10 bg-[#0c0c0c] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-3xl duration-200">
+                <div className="absolute right-0 top-full mt-4 w-72 rounded-[2rem] border border-[#D4AF37]/10 bg-[#0c0c0c] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-3xl duration-200 animate-in fade-in zoom-in slide-in-from-top-4">
                   <div className="mb-4 flex flex-col items-center border-b border-[#D4AF37]/5 pb-6">
                     <div className="mb-4 h-20 w-20 rounded-full border-2 border-[#D4AF37]/20 p-1">
                       <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-[#D4AF37] to-[#AA8B2E] text-2xl font-black text-black">

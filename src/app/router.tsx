@@ -1,13 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
 import AdminLoginpage from "../features/admin/pages/AdminLoginpage";
+import AdminTrainersPage from "../features/admin/pages/AdminTrainersPage";
+import AdminUsersPage from "../features/admin/pages/AdminUsersPage";
 import ForgotPassword from "../features/auth/pages/ForgotPasswordPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
 import SignupPage from "../features/auth/pages/SignupPage";
 import VerifyOtpPage from "../features/auth/pages/VerifyOtpPage";
+import AdminDashboard from "../features/dashboard/pages/AdminDashboard";
 import TrainerDashboard from "../features/dashboard/pages/TrainerDashboard";
 import UserDashboard from "../features/dashboard/pages/UserDashboard";
 import { LandingPage } from "../features/landing/pages/LandingPage";
+import AdminLayout from "../layouts/AdminLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import TrainerLayout from "../layouts/TrainerLayout";
 import UserLayout from "../layouts/UserLayout";
@@ -15,8 +19,8 @@ import { RoleRedirect } from "../shared/utils/RoleRedirect.utils";
 import RequireAuth from "./guards/RequireAuth";
 import RequireGuest from "./guards/RequireGuest";
 import RequireRole from "./guards/RequireRole";
-import Unauthorized from "./pages/Unauthorized";
 import NotFound from "./pages/NotFound";
+import Unauthorized from "./pages/Unauthorized";
 
 export const router = createBrowserRouter([
   {
@@ -72,7 +76,19 @@ export const router = createBrowserRouter([
               },
             ],
           },
-          { path: "/admin/dashboard", element: <h1>Admin Dashboard</h1> },
+          {
+            element: <RequireRole allowedRoles={["admin"]} />,
+            children: [
+              {
+                element: <AdminLayout />,
+                children: [
+                  { path: "/admin/dashboard", element: <AdminDashboard /> },
+                  { path: "/admin/users", element: <AdminUsersPage /> },
+                  { path: "/admin/trainers", element: <AdminTrainersPage /> },
+                ],
+              },
+            ],
+          },
         ],
       },
     ],

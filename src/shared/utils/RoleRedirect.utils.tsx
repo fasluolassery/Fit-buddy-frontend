@@ -7,7 +7,7 @@ export function RoleRedirect() {
   if (isLoading) return <div>Loading...</div>;
   if (!user) return <Navigate to="/login" replace />;
 
-  const { isActive, isVerified, onboardingComplete, role, status } = user;
+  const { isActive, isVerified, role } = user;
 
   if (!isActive) {
     return <Navigate to="/unauthorized" replace />;
@@ -21,18 +21,18 @@ export function RoleRedirect() {
     case "admin":
       return <Navigate to="/admin/dashboard" replace />;
     case "trainer": {
-      if (!onboardingComplete) {
-        return <Navigate to="/trainer/onboarding" replace />;
-      }
-      if (status !== "active") {
-        return <Navigate to="/trainer/status" replace />;
-      }
+      // if (!onboardingComplete) {
+      //   return <Navigate to="/trainer/onboarding" replace />;
+      // }
+      // if (status !== "active") {
+      //   return <Navigate to="/trainer/status" replace />;
+      // }
       return <Navigate to="/trainer/dashboard" replace />;
     }
     case "user": {
-      if (!onboardingComplete) {
-        return <Navigate to="/onboarding" replace />;
-      }
+      // if (!onboardingComplete) {
+      //   return <Navigate to="/onboarding" replace />;
+      // }
       return <Navigate to="/dashboard" replace />;
     }
     default:

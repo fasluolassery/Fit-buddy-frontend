@@ -4,12 +4,12 @@ import {
   Target as TargetIcon,
   Flame,
   Clock,
-  Calendar,
+  // Calendar,
   Dumbbell,
   Heart,
-  Zap,
-  Award,
-  ChevronRight,
+  // Zap,
+  // Award,
+  // ChevronRight,
   TrendingDown,
 } from "lucide-react";
 // import {
@@ -74,22 +74,22 @@ export default function UserDashboard() {
   //     { day: "Sun", value: 60 },
   //   ];
 
-  const upcomingWorkouts = [
-    {
-      title: "Hypertrophy Upper",
-      time: "Today, 6:00 PM",
-      duration: "45m",
-      difficulty: "Elite",
-      type: "STRENGTH",
-    },
-    {
-      title: "Metabolic HIIT",
-      time: "Tomorrow, 7:00 AM",
-      duration: "30m",
-      difficulty: "Expert",
-      type: "CARDIO",
-    },
-  ];
+  // const upcomingWorkouts = [
+  //   {
+  //     title: "Hypertrophy Upper",
+  //     time: "Today, 6:00 PM",
+  //     duration: "45m",
+  //     difficulty: "Elite",
+  //     type: "STRENGTH",
+  //   },
+  //   {
+  //     title: "Metabolic HIIT",
+  //     time: "Tomorrow, 7:00 AM",
+  //     duration: "30m",
+  //     difficulty: "Expert",
+  //     type: "CARDIO",
+  //   },
+  // ];
 
   return (
     <div className="space-y-10 font-['Inter']">
@@ -300,7 +300,7 @@ export default function UserDashboard() {
       </div>
 
       {/* Lists Section */}
-      <div className="grid gap-8 pb-10 lg:grid-cols-2">
+      {/* <div className="grid gap-8 pb-10 lg:grid-cols-2">
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold uppercase tracking-wider text-white">
@@ -377,7 +377,7 @@ export default function UserDashboard() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

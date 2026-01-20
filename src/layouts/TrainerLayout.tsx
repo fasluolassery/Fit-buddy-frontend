@@ -1,31 +1,29 @@
-import { useState } from "react";
 import {
-  Users,
-  Calendar,
-  Video,
-  MessageSquare,
-  Wallet,
-  LayoutDashboard,
-  Dumbbell,
-  UtensilsCrossed,
-  BarChart3,
-  ChevronRight,
   Bell,
-  Settings,
-  Search,
-  User,
-  LogOut,
   ChevronDown,
+  ChevronRight,
+  Dumbbell,
+  LayoutDashboard,
+  LogOut,
   Menu,
+  Search,
+  Settings,
+  User,
   X,
 } from "lucide-react";
-import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useAuth } from "../features/auth/hooks/useAuth";
+import { notify } from "../lib/notify";
 
 export default function TrainerLayout() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const { logout } = useAuth();
 
   const trainer = {
     name: "Aravind Kumar",
@@ -36,15 +34,21 @@ export default function TrainerLayout() {
 
   const navigation = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { id: "clients", label: "Clients", icon: Users, badge: "47" },
-    { id: "sessions", label: "Sessions", icon: Video, badge: "6" },
-    { id: "workouts", label: "Workout Library", icon: Dumbbell },
-    { id: "meals", label: "Meal Library", icon: UtensilsCrossed },
-    { id: "calendar", label: "Calendar", icon: Calendar },
-    { id: "messages", label: "Messages", icon: MessageSquare, badge: "3" },
-    { id: "analytics", label: "Analytics", icon: BarChart3 },
-    { id: "wallet", label: "Wallet", icon: Wallet },
+    // { id: "clients", label: "Clients", icon: Users, badge: "47" },
+    // { id: "sessions", label: "Sessions", icon: Video, badge: "6" },
+    // { id: "workouts", label: "Workout Library", icon: Dumbbell },
+    // { id: "meals", label: "Meal Library", icon: UtensilsCrossed },
+    // { id: "calendar", label: "Calendar", icon: Calendar },
+    // { id: "messages", label: "Messages", icon: MessageSquare, badge: "3" },
+    // { id: "analytics", label: "Analytics", icon: BarChart3 },
+    // { id: "wallet", label: "Wallet", icon: Wallet },
   ];
+
+  const handleLogout = async () => {
+    const res = await logout();
+    notify.success(res.message);
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0a] font-['Inter'] selection:bg-[#D4AF37] selection:text-black">
@@ -97,7 +101,7 @@ export default function TrainerLayout() {
           <nav className="no-scrollbar relative flex-1 space-y-1 overflow-y-auto px-4 py-6">
             {/* Active indicator background */}
             <div
-              className="absolute inset-x-3 rounded-xl border border-[#D4AF37]/20 bg-[#D4AF37]/10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+              className="absolute inset-x-3 rounded-xl border border-[#D4AF37]/20 bg-[#D4AF37]/10 transition-all duration-500 ease-luxury"
               style={{
                 top: `${24 + navigation.findIndex((n) => n.id === activeTab) * 52 + 2}px`,
                 height: "48px",
@@ -125,11 +129,11 @@ export default function TrainerLayout() {
                   {!sidebarCollapsed && (
                     <>
                       <span className="flex-1 text-left">{item.label}</span>
-                      {item.badge && (
+                      {/* {item.badge && (
                         <span className="rounded-full bg-[#D4AF37] px-2 py-0.5 text-[10px] font-bold text-black">
                           {item.badge}
                         </span>
-                      )}
+                      )} */}
                     </>
                   )}
                 </button>
@@ -181,7 +185,10 @@ export default function TrainerLayout() {
                     <span>Settings</span>
                   </button>
                   <div className="my-1 h-px bg-white/10" />
-                  <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-400 transition-colors hover:bg-red-500/10">
+                  <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-400 transition-colors hover:bg-red-500/10"
+                  >
                     <LogOut size={16} />
                     <span>Sign out</span>
                   </button>
@@ -291,11 +298,11 @@ export default function TrainerLayout() {
                   >
                     <Icon size={20} />
                     <span>{item.label}</span>
-                    {item.badge && (
+                    {/* {item.badge && (
                       <span className="ml-auto rounded-full bg-[#D4AF37] px-2 py-0.5 text-[10px] font-bold text-black">
                         {item.badge}
                       </span>
-                    )}
+                    )} */}
                   </button>
                 );
               })}

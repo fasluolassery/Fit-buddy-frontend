@@ -1,31 +1,40 @@
-import {
-  Bell,
-  //   DollarSign,
-  Dumbbell,
-  LayoutDashboard,
-  LogOut,
-  //   Settings,
-  //   Shield,
-  Users,
-} from "lucide-react";
-// import { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Bell, Dumbbell, LayoutDashboard, LogOut, Users } from "lucide-react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../features/auth/hooks/useAuth";
 import { notify } from "../lib/notify";
 
 export default function AdminLayout() {
-  //   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { logout } = useAuth();
 
   const navigation = [
-    { label: "Overview", icon: LayoutDashboard, path: "/admin/dashboard" },
-    { label: "Users", icon: Users, path: "/admin/users" },
-    { label: "Trainers", icon: Dumbbell, path: "/admin/trainers" },
-    // { label: "Transactions", icon: DollarSign, path: "/admin/payments" },
-    // { label: "System", icon: Shield, path: "/admin/system" },
-    // { label: "Settings", icon: Settings, path: "/admin/settings" },
+    {
+      label: "Overview",
+      icon: LayoutDashboard,
+      path: "/admin/dashboard",
+      title: "Dashboard",
+    },
+    {
+      label: "Users",
+      icon: Users,
+      path: "/admin/users",
+      title: "Users",
+    },
+    {
+      label: "Trainers",
+      icon: Dumbbell,
+      path: "/admin/trainers",
+      title: "Trainers",
+    },
   ];
+
+  // derive active page from URL
+  const activeItem = navigation.find((item) =>
+    location.pathname.startsWith(item.path),
+  );
+
+  const pageTitle = activeItem?.title ?? "Admin";
 
   const handleLogout = async () => {
     const res = await logout();
@@ -47,11 +56,17 @@ export default function AdminLayout() {
           <nav className="flex-1 space-y-1 px-4 py-6">
             {navigation.map((item) => {
               const Icon = item.icon;
+              const isActive = location.pathname.startsWith(item.path);
+
               return (
                 <button
                   key={item.label}
                   onClick={() => navigate(item.path)}
-                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-zinc-500 hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]"
+                  className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition ${
+                    isActive
+                      ? "bg-[#D4AF37]/15 text-[#D4AF37]"
+                      : "text-zinc-500 hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]"
+                  }`}
                 >
                   <Icon size={18} />
                   {item.label}
@@ -75,7 +90,8 @@ export default function AdminLayout() {
       {/* Content */}
       <div className="lg:pl-80">
         <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-zinc-900 bg-[#080808]/70 px-8 backdrop-blur-xl">
-          <h2 className="text-xl font-bold text-white">Admin Console</h2>
+          <h2 className="text-xl font-bold text-white">{pageTitle}</h2>
+
           <button className="relative rounded-xl border border-zinc-800 bg-[#0c0c0c] p-2.5 text-zinc-400">
             <Bell size={20} />
           </button>

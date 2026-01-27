@@ -42,17 +42,17 @@ export default function AuthLayout() {
 
       {/* Content */}
       <main className="relative z-10 flex min-h-[calc(100vh-76px)] flex-col items-center justify-center px-6 pb-10 pt-2">
-        <div className="flex min-h-[520px] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-4 shadow-2xl ring-1 ring-white/5 backdrop-blur-3xl transition-all duration-500 md:h-[600px] md:flex-row lg:h-[620px]">
+        <div className="flex min-h-[520px] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 shadow-2xl ring-1 ring-white/5 backdrop-blur-3xl transition-all duration-500 md:h-[600px] md:flex-row lg:h-[620px]">
           {/* Left Side: Cinematic Visual */}
-          <div className="group relative hidden h-full w-1/2 overflow-hidden border-r border-white/5 md:block md:rounded-3xl">
+          <div className="group relative hidden h-full w-1/2 overflow-hidden border-r border-white/5 md:block">
             <img
               src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop"
               alt="Elite Fitness"
-              className="h-full w-full object-cover opacity-60 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+              className="absolute inset-0 h-full w-full object-cover opacity-60 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
             />
 
             {isAuthPage && (
-              <div className="absolute inset-x-0 top-10 z-20 flex -translate-y-1/2 justify-center">
+              <div className="absolute inset-x-0 top-16 z-20 flex -translate-y-1/2 justify-center">
                 <div className="relative mx-auto flex w-full max-w-[300px] items-center justify-between gap-1 overflow-hidden rounded-2xl border border-white/10 bg-black p-1.5 ring-1 ring-white/5 backdrop-blur-2xl">
                   {/* Glass Indicator - V1 Sidebar Style */}
                   <div
@@ -97,7 +97,7 @@ export default function AuthLayout() {
           </div>
 
           {/* Right Side: Forms */}
-          <div className="custom-scrollbar flex h-full flex-1 flex-col overflow-y-auto rounded-3xl p-6 md:p-7">
+          <div className="custom-scrollbar flex h-full flex-1 flex-col overflow-y-auto p-6 md:p-7">
             <div className="flex flex-1 flex-col justify-start">
               <Outlet context={{ role }} />
             </div>

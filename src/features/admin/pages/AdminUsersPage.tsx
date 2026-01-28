@@ -6,66 +6,47 @@ import {
   UserX,
   Users,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GlassCard } from "../../../shared/components/ui";
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  isBlocked: boolean;
-  isVerified: boolean;
-  planActive: boolean;
-  createdAt: string;
-};
-
-const USERS: User[] = [
-  {
-    id: "1",
-    name: "Rahul Sharma",
-    email: "rahul@mail.com",
-    avatar: "https://i.pravatar.cc/150?img=11",
-    isBlocked: false,
-    isVerified: true,
-    planActive: true,
-    createdAt: "2025-11-12",
-  },
-  {
-    id: "2",
-    name: "Anjali Verma",
-    email: "anjali@mail.com",
-    avatar: "https://i.pravatar.cc/150?img=12",
-    isBlocked: true,
-    isVerified: false,
-    planActive: false,
-    createdAt: "2025-10-01",
-  },
-];
+import { useAdminUsers } from "../hooks/useAdminUsers";
 
 export default function AdminUsersPage() {
-  const [users, setUsers] = useState<User[]>(USERS);
+  const { users, fetchUsers, loading, apiError } = useAdminUsers();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "active" | "blocked">("all");
 
-  const filteredUsers = useMemo(() => {
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  const filtered = useMemo(() => {
     return users.filter((u) => {
-      const matchesQuery =
+      const matchQuery =
         u.name.toLowerCase().includes(query.toLowerCase()) ||
         u.email.toLowerCase().includes(query.toLowerCase());
 
-      const status = u.isBlocked ? "blocked" : "active";
-      const matchesStatus = filter === "all" ? true : status === filter;
+      const matchFilter =
+        filter === "all"
+          ? true
+          : filter === "blocked"
+            ? u.isBlocked
+            : !u.isBlocked;
 
-      return matchesQuery && matchesStatus;
+      return matchQuery && matchFilter;
     });
   }, [users, query, filter]);
 
-  const toggleBlock = (id: string) => {
-    setUsers((prev) =>
-      prev.map((u) => (u.id === id ? { ...u, isBlocked: !u.isBlocked } : u)),
+  if (loading) {
+    return <GlassCard className="px-6 py-4 text-sm">Loading users…</GlassCard>;
+  }
+
+  if (apiError) {
+    return (
+      <GlassCard className="px-6 py-4 text-sm text-red-400">
+        {apiError}
+      </GlassCard>
     );
-  };
+  }
 
   return (
     <div className="space-y-6">
@@ -105,62 +86,65 @@ export default function AdminUsersPage() {
 
       {/* Table */}
       <GlassCard className="overflow-hidden rounded-2xl">
-        {filteredUsers.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center text-zinc-400">
+        {filtered.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 text-zinc-400">
             <Users size={36} className="mb-3 opacity-50" />
             <p className="text-sm font-medium text-white">No users found</p>
-            <p className="mt-1 text-xs">Try changing filters or search</p>
           </div>
         ) : (
-          <table className="w-full table-fixed text-sm">
+          <table className="w-full text-sm">
             <thead className="border-b border-white/10 text-zinc-400">
               <tr>
-                <th className="px-6 py-4 text-left font-medium">User</th>
-                <th className="px-6 py-4 text-left font-medium">Status</th>
-                <th className="px-6 py-4 text-left font-medium">Verified</th>
-                <th className="px-6 py-4 text-left font-medium">Plan</th>
-                <th className="px-6 py-4 text-left font-medium">Joined</th>
-                <th className="px-6 py-4 text-right font-medium">Actions</th>
+                <th className="px-6 py-4 text-left">User</th>
+                <th className="px-6 py-4 text-left">Status</th>
+                <th className="px-6 py-4 text-left">Verified</th>
+                <th className="px-6 py-4 text-left">Plan</th>
+                <th className="px-6 py-4 text-left">Joined</th>
+                <th className="px-6 py-4 text-center">Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              {filteredUsers.map((user) => (
+              {filtered.map((u) => (
                 <tr
-                  key={user.id}
-                  className="border-b border-white/5 last:border-none hover:bg-white/[0.03]"
+                  key={u._id}
+                  className="border-b border-white/5 hover:bg-white/[0.03]"
                 >
                   {/* User */}
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <img
-                        src={user.avatar}
+                        src={u.avatar || "https://i.pravatar.cc/150"}
                         className="h-9 w-9 rounded-full object-cover"
-                        alt={user.name}
+                        alt={u.name}
                       />
-                      <div>
-                        <p className="font-medium text-white">{user.name}</p>
-                        <p className="text-xs text-zinc-400">{user.email}</p>
+                      <div className="min-w-0">
+                        <p className="truncate font-medium text-white">
+                          {u.name}
+                        </p>
+                        <p className="truncate text-xs text-zinc-400">
+                          {u.email}
+                        </p>
                       </div>
                     </div>
                   </td>
 
-                  {/* Status — FIXED WIDTH */}
+                  {/* Status */}
                   <td className="px-6 py-4">
                     <span
-                      className={`inline-flex w-24 justify-center rounded-full px-3 py-1 text-xs font-medium ${
-                        user.isBlocked
+                      className={`inline-flex w-20 justify-center rounded-full px-3 py-1 text-xs font-medium ${
+                        u.isBlocked
                           ? "bg-red-500/15 text-red-400"
                           : "bg-emerald-500/15 text-emerald-400"
                       }`}
                     >
-                      {user.isBlocked ? "Blocked" : "Active"}
+                      {u.isBlocked ? "Blocked" : "Active"}
                     </span>
                   </td>
 
                   {/* Verified */}
                   <td className="px-6 py-4">
-                    {user.isVerified ? (
+                    {u.isVerified ? (
                       <span className="inline-flex items-center gap-1 text-xs text-emerald-400">
                         <ShieldCheck size={14} /> Verified
                       </span>
@@ -172,38 +156,44 @@ export default function AdminUsersPage() {
                   </td>
 
                   {/* Plan */}
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-xs">
                     <span
-                      className={`text-xs font-medium ${
-                        user.planActive ? "text-[#D4AF37]" : "text-zinc-500"
-                      }`}
+                      className={
+                        u.planActive
+                          ? "font-medium text-[#D4AF37]"
+                          : "text-zinc-500"
+                      }
                     >
-                      {user.planActive ? "Active" : "Inactive"}
+                      {u.planActive ? "Active" : "Inactive"}
                     </span>
                   </td>
 
                   {/* Joined */}
                   <td className="px-6 py-4 text-xs text-zinc-400">
-                    {new Date(user.createdAt).toLocaleDateString()}
+                    {new Date(u.createdAt).toLocaleDateString()}
                   </td>
 
-                  {/* Actions — FIXED WIDTH */}
-                  <td className="px-6 py-4 text-right">
-                    <button
-                      onClick={() => toggleBlock(user.id)}
-                      className={`inline-flex w-28 items-center justify-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium ${
-                        user.isBlocked
-                          ? "text-emerald-400 hover:bg-emerald-500/10"
-                          : "text-red-400 hover:bg-red-500/10"
-                      }`}
-                    >
-                      {user.isBlocked ? (
-                        <UserCheck size={14} />
-                      ) : (
-                        <UserX size={14} />
-                      )}
-                      {user.isBlocked ? "Unblock" : "Block"}
-                    </button>
+                  {/* Actions */}
+                  <td className="px-6 py-4">
+                    <div className="mx-auto flex w-24 justify-center">
+                      <button
+                        className={`inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-medium ${
+                          u.isBlocked
+                            ? "text-emerald-400 hover:bg-emerald-500/10"
+                            : "text-red-400 hover:bg-red-500/10"
+                        }`}
+                      >
+                        {u.isBlocked ? (
+                          <>
+                            <UserCheck size={14} /> Unblock
+                          </>
+                        ) : (
+                          <>
+                            <UserX size={14} /> Block
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -8,19 +8,20 @@ import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
 import SignupPage from "../features/auth/pages/SignupPage";
 import VerifyOtpPage from "../features/auth/pages/VerifyOtpPage";
 import AdminDashboard from "../features/dashboard/pages/AdminDashboard";
-import TrainerDashboard from "../features/dashboard/pages/TrainerDashboard";
 import UserDashboard from "../features/dashboard/pages/UserDashboard";
 import { LandingPage } from "../features/landing/pages/LandingPage";
 import AdminLayout from "../layouts/AdminLayout";
 import AuthLayout from "../layouts/AuthLayout";
-import TrainerLayout from "../layouts/TrainerLayout";
 import UserLayout from "../layouts/UserLayout";
 import { RoleRedirect } from "../shared/utils/RoleRedirect.utils";
 import RequireAuth from "./guards/RequireAuth";
 import RequireGuest from "./guards/RequireGuest";
+import RequireOnboarding from "./guards/RequireOnboarding";
 import RequireRole from "./guards/RequireRole";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
+import TrainerLayout from "../layouts/TrainerLayout";
+import TrainerDashboard from "../features/dashboard/pages/TrainerDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -52,10 +53,18 @@ export const router = createBrowserRouter([
             element: <RequireRole allowedRoles={["user"]} />,
             children: [
               {
-                element: <UserLayout />,
+                element: <RequireOnboarding />,
                 children: [
-                  { path: "/dashboard", element: <UserDashboard /> },
-                  { path: "/onboarding", element: <h1>User Onboarding</h1> },
+                  {
+                    element: <UserLayout />,
+                    children: [
+                      { path: "/dashboard", element: <UserDashboard /> },
+                      {
+                        path: "/onboarding",
+                        element: <h1>user onboarding</h1>,
+                      },
+                    ],
+                  },
                 ],
               },
             ],
@@ -64,14 +73,25 @@ export const router = createBrowserRouter([
             element: <RequireRole allowedRoles={["trainer"]} />,
             children: [
               {
-                element: <TrainerLayout />,
+                element: <RequireOnboarding />,
                 children: [
-                  { path: "/trainer/dashboard", element: <TrainerDashboard /> },
                   {
-                    path: "/trainer/onboarding",
-                    element: <h1>Trainer onboarding</h1>,
+                    element: <TrainerLayout />,
+                    children: [
+                      {
+                        path: "/trainer/dashboard",
+                        element: <TrainerDashboard />,
+                      },
+                      {
+                        path: "/trainer/onboarding",
+                        element: <h1>Trainer onboarding</h1>,
+                      },
+                      {
+                        path: "/trainer/status",
+                        element: <h1>Trainer Status</h1>,
+                      },
+                    ],
                   },
-                  { path: "/trainer/status", element: <h1>Trainer Status</h1> },
                 ],
               },
             ],

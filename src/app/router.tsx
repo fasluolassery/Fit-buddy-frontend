@@ -21,6 +21,7 @@ import RequireGuest from "./guards/RequireGuest";
 import RequireRole from "./guards/RequireRole";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
+import RequireOnboarding from "./guards/RequireOnboarding";
 
 export const router = createBrowserRouter([
   {
@@ -52,10 +53,18 @@ export const router = createBrowserRouter([
             element: <RequireRole allowedRoles={["user"]} />,
             children: [
               {
-                element: <UserLayout />,
+                element: <RequireOnboarding />,
                 children: [
-                  { path: "/dashboard", element: <UserDashboard /> },
-                  { path: "/onboarding", element: <h1>User Onboarding</h1> },
+                  {
+                    element: <UserLayout />,
+                    children: [
+                      { path: "/dashboard", element: <UserDashboard /> },
+                      {
+                        path: "/onboarding",
+                        element: <h1>user onboarding</h1>,
+                      },
+                    ],
+                  },
                 ],
               },
             ],
@@ -64,14 +73,25 @@ export const router = createBrowserRouter([
             element: <RequireRole allowedRoles={["trainer"]} />,
             children: [
               {
-                element: <TrainerLayout />,
+                element: <RequireOnboarding />,
                 children: [
-                  { path: "/trainer/dashboard", element: <TrainerDashboard /> },
                   {
-                    path: "/trainer/onboarding",
-                    element: <h1>Trainer onboarding</h1>,
+                    element: <TrainerLayout />,
+                    children: [
+                      {
+                        path: "/trainer/dashboard",
+                        element: <TrainerDashboard />,
+                      },
+                      {
+                        path: "/trainer/onboarding",
+                        element: <h1>Trainer onboarding</h1>,
+                      },
+                      {
+                        path: "/trainer/status",
+                        element: <h1>Trainer Status</h1>,
+                      },
+                    ],
                   },
-                  { path: "/trainer/status", element: <h1>Trainer Status</h1> },
                 ],
               },
             ],

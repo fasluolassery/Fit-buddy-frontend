@@ -8,6 +8,7 @@ import { BodyMetricsStep } from "../components/steps/BodyMetricsStep";
 import { DietaryPreferencesStep } from "../components/steps/DietaryPreferencesStep";
 import { EquipmentStep } from "../components/steps/EquipmentStep";
 import { ReviewStep } from "../components/steps/ReviewStep";
+import { useOnboarding } from "../hooks/useOnboarding";
 
 const INITIAL_DATA: UserOnboardingData = {
   primaryGoal: "",
@@ -27,13 +28,11 @@ export default function UserOnboardingPage() {
   const next = () => setStep((s) => s + 1);
   const prev = () => setStep((s) => Math.max(0, s - 1));
 
-  const submit = () => {
-    // TEMP: replace with API call later
-    console.log("ONBOARDING DATA:", data);
+  const { submitOnboarding, loading, apiError } = useOnboarding();
 
-    // later:
-    // await dispatch(completeOnboarding(data))
-    // navigate("/dashboard")
+  const submit = async () => {
+    console.log(data);
+    await submitOnboarding(data);
   };
 
   return (

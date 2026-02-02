@@ -5,6 +5,7 @@ import { useTrainerOnboardingForm } from "../hooks/useTrainerOnboardingForm";
 import { FormErrorMessage } from "../../../shared/components/form/FormErrorMessage";
 import { FormSubmitButton } from "../../../shared/components/form/FormSubmitButton";
 import type { TrainerOnboardingInput } from "../validation";
+import { useOnboarding } from "../hooks/useOnboarding";
 
 export default function TrainerOnboardingPage() {
   const {
@@ -14,14 +15,13 @@ export default function TrainerOnboardingPage() {
     formState: { errors, isSubmitting },
   } = useTrainerOnboardingForm();
 
-  // UI-only state
   const [specializations, setSpecializations] = useState<string[]>([]);
   const [certificates, setCertificates] = useState<File[]>([]);
   const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [inputSpec, setInputSpec] = useState("");
 
-  /* ------------------ handlers ------------------ */
+  const { submitTrainerOnboarding, loading, apiError } = useOnboarding();
 
   const addSpec = () => {
     if (!inputSpec.trim()) return;
@@ -60,14 +60,9 @@ export default function TrainerOnboardingPage() {
     setValue("certificates", updated, { shouldValidate: true });
   };
 
-  /* ------------------ submit ------------------ */
-
   const onSubmit = async (data: TrainerOnboardingInput) => {
-    // later → convert to FormData and call API
-    console.log("TRAINER ONBOARDING DATA", data);
+    await submitTrainerOnboarding(data);
   };
-
-  /* ------------------ UI ------------------ */
 
   return (
     <div className="min-h-screen px-8 py-10 text-white">
@@ -213,11 +208,18 @@ export default function TrainerOnboardingPage() {
             <FormErrorMessage message={errors.certificates?.message} />
           </div>
 
+          {/* API error */}
+          {apiError && (
+            <div className="mb-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+              {apiError}
+            </div>
+          )}
+
           {/* Submit */}
           <FormSubmitButton
             label="Submit for Review"
             loadingLabel="Submitting..."
-            submitting={isSubmitting}
+            submitting={loading || isSubmitting}
           />
         </form>
       </GlassCard>

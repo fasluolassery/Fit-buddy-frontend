@@ -10,9 +10,9 @@ export function useTrainerOnboardingForm() {
     resolver: zodResolver(trainerOnboardingSchema),
     mode: "onTouched",
     defaultValues: {
-      bio: "",
-      experience: "",
-      specializations: [],
+      bio: "Certified fitness trainer focused on safe, sustainable progress.",
+      experience: "2",
+      specializations: ["Weight Loss", "Muscle Building", "General Fitness"],
       certificates: [],
     },
   });

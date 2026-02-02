@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
 import RequireOnboarding from "./guards/RequireOnboarding";
 import UserOnboardingPage from "../features/onboarding/pages/UserOnboardingPage";
+import TrainerOnboardingPage from "../features/onboarding/pages/TrainerOnboardingPage";
 
 export const router = createBrowserRouter([
   {
@@ -77,16 +78,17 @@ export const router = createBrowserRouter([
                 element: <RequireOnboarding />,
                 children: [
                   {
+                    path: "/trainer/onboarding",
+                    element: <TrainerOnboardingPage />,
+                  },
+                  {
                     element: <TrainerLayout />,
                     children: [
                       {
                         path: "/trainer/dashboard",
                         element: <TrainerDashboard />,
                       },
-                      {
-                        path: "/trainer/onboarding",
-                        element: <h1>Trainer onboarding</h1>,
-                      },
+
                       {
                         path: "/trainer/status",
                         element: <h1>Trainer Status</h1>,

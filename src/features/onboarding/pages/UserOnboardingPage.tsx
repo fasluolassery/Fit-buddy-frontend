@@ -14,10 +14,10 @@ const INITIAL_DATA: UserOnboardingData = {
   primaryGoal: "",
   fitnessLevel: "",
   gender: "",
-  age: 0,
-  height: 0,
-  weight: 0,
-  dietaryPreferences: [],
+  age: 20,
+  height: 150,
+  weight: 47,
+  dietaryPreferences: "",
   equipments: [],
 };
 
@@ -31,7 +31,6 @@ export default function UserOnboardingPage() {
   const { submitOnboarding, loading, apiError } = useOnboarding();
 
   const submit = async () => {
-    console.log(data);
     await submitOnboarding(data);
   };
 
@@ -106,7 +105,14 @@ export default function UserOnboardingPage() {
         />
       )}
 
-      {step === 6 && <ReviewStep data={data} onSubmit={submit} />}
+      {step === 6 && (
+        <ReviewStep
+          data={data}
+          onSubmit={submit}
+          loading={loading}
+          apiError={apiError}
+        />
+      )}
     </div>
   );
 }

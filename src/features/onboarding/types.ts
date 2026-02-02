@@ -5,6 +5,6 @@ export interface UserOnboardingData {
   age: number;
   height: number;
   weight: number;
-  dietaryPreferences: string[];
+  dietaryPreferences: string;
   equipments: string[];
 }

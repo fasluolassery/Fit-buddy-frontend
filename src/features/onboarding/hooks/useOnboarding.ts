@@ -6,6 +6,7 @@ import { useAppDispatch } from "../../../shared/hooks/redux";
 import type { UserOnboardingData } from "../types";
 import { completeOnboardingRequest } from "../onboarding.service";
 import { updateUser } from "../../auth/auth.slice";
+import { notify } from "../../../lib/notify";
 
 function getErrorMessage(err: unknown): string {
   const apiError = err as ApiErrorResponse;
@@ -24,9 +25,8 @@ export function useOnboarding() {
       setApiError(null);
 
       const res = await completeOnboardingRequest(data);
-      const { user } = res.data;
-
-      dispatch(updateUser(user));
+      dispatch(updateUser(res.data));
+      notify.success(res.message);
 
       navigate("/redirect", { replace: true });
     } catch (err) {

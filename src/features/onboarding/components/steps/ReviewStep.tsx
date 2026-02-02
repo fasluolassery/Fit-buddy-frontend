@@ -1,12 +1,15 @@
+// ReviewStep.tsx
 import { StepLayout } from "../StepLayout";
 import type { UserOnboardingData } from "../../types";
 
 interface Props {
   data: UserOnboardingData;
   onSubmit: () => void;
+  loading?: boolean;
+  apiError?: string | null;
 }
 
-export function ReviewStep({ data, onSubmit }: Props) {
+export function ReviewStep({ data, onSubmit, loading, apiError }: Props) {
   return (
     <StepLayout
       title="Review & Finish"
@@ -19,14 +22,19 @@ export function ReviewStep({ data, onSubmit }: Props) {
         <p>Age: {data.age}</p>
         <p>Height: {data.height} cm</p>
         <p>Weight: {data.weight} kg</p>
-        <p>Diet: {data.dietaryPreferences.join(", ") || "None"}</p>
+        <p>Diet: {data.dietaryPreferences}</p>
         <p>Equipment: {data.equipments.join(", ") || "None"}</p>
+
+        {apiError && <p className="text-red-500">{apiError}</p>}
 
         <button
           onClick={onSubmit}
-          className="mt-6 w-full rounded-xl bg-amber-400 py-3 font-semibold text-black"
+          disabled={loading}
+          className={`mt-6 w-full rounded-xl py-3 font-semibold text-black ${
+            loading ? "cursor-not-allowed bg-gray-500" : "bg-amber-400"
+          }`}
         >
-          Finish Onboarding
+          {loading ? "Submitting..." : "Finish Onboarding"}
         </button>
       </div>
     </StepLayout>

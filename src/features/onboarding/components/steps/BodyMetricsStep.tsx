@@ -1,4 +1,5 @@
 import { StepLayout } from "../StepLayout";
+import { useState } from "react";
 
 interface Props {
   age: number;
@@ -15,6 +16,30 @@ export function BodyMetricsStep({
   onChange,
   onContinue,
 }: Props) {
+  const [error, setError] = useState("");
+
+  const handleContinue = () => {
+    if (age <= 0 || height <= 0 || weight <= 0) {
+      setError("All values must be greater than 0");
+      return;
+    }
+    if (age > 120) {
+      setError("Please enter a valid age");
+      return;
+    }
+    if (height > 300) {
+      setError("Please enter a valid height in cm");
+      return;
+    }
+    if (weight > 500) {
+      setError("Please enter a valid weight in kg");
+      return;
+    }
+
+    setError(""); // clear error
+    onContinue();
+  };
+
   return (
     <StepLayout
       title="Your Body Metrics"
@@ -25,9 +50,11 @@ export function BodyMetricsStep({
           type="number"
           placeholder="Age"
           value={age || ""}
-          onChange={(e) =>
-            onChange({ age: Number(e.target.value), height, weight })
-          }
+          onChange={(e) => {
+            const val = Number(e.target.value);
+            if (val < 0) return; // optional: prevent negative typing
+            onChange({ age: val, height, weight });
+          }}
           className="w-full rounded-lg border border-zinc-800 bg-black p-3 text-white"
         />
 
@@ -35,9 +62,11 @@ export function BodyMetricsStep({
           type="number"
           placeholder="Height (cm)"
           value={height || ""}
-          onChange={(e) =>
-            onChange({ age, height: Number(e.target.value), weight })
-          }
+          onChange={(e) => {
+            const val = Number(e.target.value);
+            if (val < 0) return;
+            onChange({ age, height: val, weight });
+          }}
           className="w-full rounded-lg border border-zinc-800 bg-black p-3 text-white"
         />
 
@@ -45,15 +74,19 @@ export function BodyMetricsStep({
           type="number"
           placeholder="Weight (kg)"
           value={weight || ""}
-          onChange={(e) =>
-            onChange({ age, height, weight: Number(e.target.value) })
-          }
+          onChange={(e) => {
+            const val = Number(e.target.value);
+            if (val < 0) return;
+            onChange({ age, height, weight: val });
+          }}
           className="w-full rounded-lg border border-zinc-800 bg-black p-3 text-white"
         />
 
+        {error && <p className="text-red-500">{error}</p>}
+
         <button
           type="button"
-          onClick={onContinue}
+          onClick={handleContinue}
           className="w-full rounded-xl bg-amber-400 py-3 font-semibold text-black"
         >
           Continue

@@ -22,6 +22,7 @@ import RequireRole from "./guards/RequireRole";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
 import RequireOnboarding from "./guards/RequireOnboarding";
+import UserOnboardingPage from "../features/onboarding/pages/UserOnboardingPage";
 
 export const router = createBrowserRouter([
   {
@@ -56,13 +57,13 @@ export const router = createBrowserRouter([
                 element: <RequireOnboarding />,
                 children: [
                   {
+                    path: "/onboarding",
+                    element: <UserOnboardingPage />,
+                  },
+                  {
                     element: <UserLayout />,
                     children: [
                       { path: "/dashboard", element: <UserDashboard /> },
-                      {
-                        path: "/onboarding",
-                        element: <h1>user onboarding</h1>,
-                      },
                     ],
                   },
                 ],

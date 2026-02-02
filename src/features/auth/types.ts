@@ -22,7 +22,7 @@ export interface AuthUser {
   onboardingComplete: boolean;
   isVerified: boolean;
   isActive: boolean;
-  status?: "active" | "pending" | "rejected";
+  trainerApprovalStatus?: "approved" | "pending" | "rejected";
   createdAt: Date;
 }
 

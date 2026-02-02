@@ -88,11 +88,6 @@ export const router = createBrowserRouter([
                         path: "/trainer/dashboard",
                         element: <TrainerDashboard />,
                       },
-
-                      {
-                        path: "/trainer/status",
-                        element: <h1>Trainer Status</h1>,
-                      },
                     ],
                   },
                 ],

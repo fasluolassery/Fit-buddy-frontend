@@ -28,10 +28,10 @@ export default function UserOnboardingPage() {
   const next = () => setStep((s) => s + 1);
   const prev = () => setStep((s) => Math.max(0, s - 1));
 
-  const { submitOnboarding, loading, apiError } = useOnboarding();
+  const { submitUserOnboarding, loading, apiError } = useOnboarding();
 
   const submit = async () => {
-    await submitOnboarding(data);
+    await submitUserOnboarding(data);
   };
 
   return (

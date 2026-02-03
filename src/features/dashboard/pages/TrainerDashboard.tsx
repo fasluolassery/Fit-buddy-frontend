@@ -10,8 +10,17 @@ import {
   AlertCircle,
   TrendingDown,
 } from "lucide-react";
+import { useAppSelector } from "../../../shared/hooks/redux";
+import TrainerPending from "../../trainer/components/TrainerPending";
+import TrainerRejected from "../../trainer/components/TrainerRejected";
 
 export default function TrainerDashboard() {
+  const { user } = useAppSelector((s) => s.auth);
+  const approvalStatus = user?.trainerApprovalStatus;
+
+  if (approvalStatus === "pending") return <TrainerPending />;
+  if (approvalStatus === "rejected") return <TrainerRejected />;
+
   // Mock Data
   const stats = [
     {

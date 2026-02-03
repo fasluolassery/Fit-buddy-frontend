@@ -10,3 +10,13 @@ export const completeOnboardingRequest = (
     .patch<ApiResponse<AuthUser>>("/users/onboarding/user", data)
     .then(({ data }) => data);
 };
+
+export const submitTrainerOnboardingRequest = (
+  data: FormData,
+): Promise<ApiResponse<AuthUser>> => {
+  return api
+    .patch<ApiResponse<AuthUser>>("/users/onboarding/trainer", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then(({ data }) => data);
+};

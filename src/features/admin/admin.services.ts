@@ -1,6 +1,6 @@
 import api from "../../lib/api";
 import type { ApiResponse } from "../../shared/types/api";
-import type { AdminUser } from "./types";
+import type { AdminTrainer, AdminUser } from "./types";
 
 export const getAdminUsersRequest = (): Promise<ApiResponse<AdminUser[]>> => {
   return api
@@ -21,5 +21,32 @@ export const unblockUserRequest = (
 ): Promise<ApiResponse<null>> => {
   return api
     .patch<ApiResponse<null>>(`/users/admin/users/${userId}/unblock`)
+    .then(({ data }) => data);
+};
+
+export const getAdminTrainersRequest = (): Promise<
+  ApiResponse<AdminTrainer[]>
+> => {
+  return api
+    .get<ApiResponse<AdminTrainer[]>>("/users/admin/trainers")
+    .then(({ data }) => data);
+};
+
+export const approveTrainerRequest = (
+  trainerId: string,
+): Promise<ApiResponse<null>> => {
+  return api
+    .patch<ApiResponse<null>>(`/users/admin/trainers/${trainerId}/approve`)
+    .then(({ data }) => data);
+};
+
+export const rejectTrainerRequest = (
+  trainerId: string,
+  reason: string,
+): Promise<ApiResponse<null>> => {
+  return api
+    .patch<
+      ApiResponse<null>
+    >(`/users/admin/trainers/${trainerId}/reject`, { reason })
     .then(({ data }) => data);
 };

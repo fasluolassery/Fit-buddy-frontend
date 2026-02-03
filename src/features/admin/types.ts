@@ -8,3 +8,18 @@ export type AdminUser = {
   planActive: boolean;
   createdAt: string;
 };
+
+export type AdminTrainer = {
+  _id: string;
+  name: string;
+  email: string;
+  profilePhoto?: string | null;
+
+  trainerApprovalStatus: "pending" | "approved" | "rejected";
+  isVerified: boolean;
+  isBlocked: boolean;
+
+  rating: number;
+  experienceYears: string;
+  createdAt: string;
+};
